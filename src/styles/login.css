@@ -1,0 +1,146 @@
+/* --- Overrides específicos para la página de Login --- */
+/* Necesario para romper el layout flex del archivo global index.css */
+body.page-login {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
+
+body.page-login #root {
+  display: block; 
+  height: 100vh;
+  width: 100vw;
+}
+
+/* --- Layout Principal --- */
+.login-wrapper {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Sección Izquierda (Imagen) --- */
+.login-wrapper .image-section {
+  width: 50%;
+  height: 100%;
+  position: relative;
+  background-color: #000;
+}
+
+.login-wrapper .image-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* --- Sección Derecha (Formulario) --- */
+.login-wrapper .form-section {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px 60px;
+  background-color: #ffffff;
+  box-sizing: border-box;
+}
+
+/* --- Estilos de Elementos --- */
+.login-wrapper h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+}
+
+.login-wrapper label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #444;
+  display: block;
+}
+
+.login-wrapper input {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  background-color: #f8f9fa;
+  box-sizing: border-box;
+}
+
+.login-wrapper input:focus {
+  outline: none;
+  border-color: #005BC2;
+  background-color: #ffffff;
+  box-shadow: 0 0 4px rgba(0, 91, 194, 0.4);
+}
+
+.login-wrapper button {
+  width: 100%;
+  padding: 12px 15px;
+  background-color: #005BC2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.login-wrapper button:hover {
+  background-color: #004290;
+}
+
+.login-wrapper .forgot-password {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.login-wrapper .forgot-password a {
+  color: #005BC2;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+/* --- Alertas (Feedback) --- */
+.alert {
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.alert.error {
+  color: #dc3545; /* Rojo */
+}
+
+.alert.success {
+  color: #28a745; /* Verde */
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .login-wrapper {
+    flex-direction: column;
+  }
+
+  .login-wrapper .image-section {
+    width: 100%;
+    height: 250px; 
+    flex: none;
+  }
+
+  .login-wrapper .form-section {
+    width: 100%;
+    padding: 30px 20px;
+    flex: 1;
+  }
+}

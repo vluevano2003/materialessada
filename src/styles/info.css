@@ -1,0 +1,88 @@
+.info-page-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Contenedor Flex: Texto a la izquierda, Mapa a la derecha */
+.info-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  width: 100%;
+  gap: 40px;
+}
+
+/* --- Sección de Texto --- */
+.info-content {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+}
+
+.info-content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #000;
+  font-weight: bold;
+}
+
+.info-content .description {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  color: #333;
+  padding: 0 10px;
+}
+
+.contact-details h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  margin-top: 20px;
+  color: #000;
+  font-weight: bold;
+}
+
+.contact-details p {
+  font-size: 1rem;
+  color: #333;
+  margin: 0;
+}
+
+/* --- Sección del Mapa --- */
+.map-container {
+  flex: 1;
+  height: 400px;
+  width: 100%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+}
+
+/* --- Responsive (Móvil) --- */
+@media (max-width: 768px) {
+  .info-container {
+    /* Invierte el orden: Mapa arriba, Texto abajo */
+    flex-direction: column-reverse;
+    gap: 30px;
+  }
+
+  .map-container {
+    height: 300px;
+  }
+
+  .info-content h2 {
+    font-size: 1.5rem;
+  }
+}

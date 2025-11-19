@@ -1,0 +1,187 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Layout Principal --- */
+.inventory-wrapper {
+  height: 100%;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+h1,
+h2 {
+  text-align: center;
+  color: #005bc2;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+/* --- Grid Layout (Formulario vs Tabla) --- */
+.inventory-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Formulario (1/3) - Tabla (2/3) */
+  gap: 25px;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding-bottom: 50px;
+}
+
+.inventory-form-panel,
+.inventory-list-panel {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  height: fit-content;
+}
+
+/* --- Estilos del Formulario --- */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  margin: 10px 0 5px;
+  font-weight: bold;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+form input,
+form textarea,
+form select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 5px;
+}
+
+form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+form button {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #005bc2;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+form button:hover {
+  background-color: #004494;
+}
+
+#cancelar-edicion {
+  background-color: #6c757d;
+  margin-top: 10px;
+}
+#cancelar-edicion:hover {
+  background-color: #5a6268;
+}
+
+/* --- Tabla con Sticky Header --- */
+.table-scroll-container {
+  max-height: 75vh;
+  height: auto;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 5px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+thead {
+  background-color: #005bc2;
+  color: white;
+  position: sticky; /* Mantiene el encabezado fijo al hacer scroll */
+  top: 0;
+  z-index: 10;
+}
+
+th,
+td {
+  padding: 12px 8px;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+  font-size: 0.9rem;
+}
+
+/* --- Botones de Acción --- */
+.acciones-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+}
+
+button.editar,
+button.eliminar {
+  width: 80px;
+  padding: 6px 0;
+  font-size: 0.85rem;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+button.editar {
+  background-color: #005bc2;
+}
+button.editar:hover {
+  background-color: #003f8a;
+}
+
+button.eliminar {
+  background-color: #dc3545;
+}
+button.eliminar:hover {
+  background-color: #c82333;
+}
+
+/* --- Responsive (Móvil) --- */
+@media (max-width: 1000px) {
+  .inventory-wrapper {
+    padding: 10px;
+  }
+
+  .inventory-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .table-scroll-container {
+    overflow-x: auto; /* Scroll horizontal necesario en tablas móviles */
+    max-height: 500px;
+  }
+
+  table th,
+  table td {
+    white-space: nowrap;
+    padding: 8px;
+  }
+}

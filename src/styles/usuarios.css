@@ -1,0 +1,206 @@
+/* --- Layout Principal --- */
+.user-management-wrapper {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #f4f4f4;
+}
+
+.user-management-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Formulario (1/3) - Tabla (2/3) */
+  gap: 25px;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding-bottom: 50px;
+}
+
+/* --- Paneles / Tarjetas --- */
+.user-form-panel,
+.user-list-panel {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  height: fit-content;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+h2 {
+  text-align: center;
+  color: #005bc2;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+/* --- Formulario --- */
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+form label {
+  margin: 12px 0 5px;
+  font-weight: bold;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+form input,
+form select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+form input:focus,
+form select:focus {
+  border-color: #005bc2;
+  outline: none;
+}
+
+form button[type="submit"] {
+  margin-top: 25px;
+  padding: 12px;
+  background-color: #005bc2;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+form button[type="submit"]:hover {
+  background-color: #004494;
+}
+
+/* --- Mensajes de Feedback --- */
+.message-box {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* --- Tabla de Usuarios --- */
+.table-scroll-container {
+  max-height: 70vh;
+  height: auto;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 5px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+thead {
+  background-color: #005bc2;
+  color: white;
+  position: sticky; /* Mantiene cabecera fija */
+  top: 0;
+  z-index: 10;
+}
+
+th,
+td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+  font-size: 0.9rem;
+}
+
+/* Badges y Acciones */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  display: inline-block;
+}
+.status-badge.active {
+  background-color: #d4edda;
+  color: #155724;
+}
+.status-badge.inactive {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.action-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+.btn-deactivate {
+  background-color: #dc3545;
+  color: white;
+}
+.btn-activate {
+  background-color: #28a745;
+  color: white;
+}
+
+/* --- Responsive (Móvil) --- */
+@media (max-width: 768px) {
+  .user-management-wrapper {
+    padding: 10px;
+    height: auto;
+    overflow-y: visible;
+  }
+
+  .user-management-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .user-form-panel,
+  .user-list-panel {
+    padding: 15px;
+  }
+
+  form input,
+  form select {
+    font-size: 16px; /* Evita zoom automático en iOS */
+  }
+
+  .table-scroll-container {
+    overflow-x: auto;
+    max-height: 400px;
+  }
+
+  table th,
+  table td {
+    white-space: nowrap;
+    padding: 8px;
+  }
+}

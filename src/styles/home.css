@@ -1,0 +1,224 @@
+/* --- Carrusel --- */
+.anuncios {
+  position: relative;
+  width: 100%;
+  max-width: 800px; /* Limitamos el ancho máximo, pero dejamos que sea fluido */
+  height: 400px;
+  margin: 0 auto;
+}
+
+.carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+}
+
+.slide {
+  display: none; /* React controla el display block/none en línea */
+  width: 100%;
+  height: 100%;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 10;
+}
+
+.prev {
+  left: 10px;
+}
+.next {
+  right: 10px;
+}
+
+.indicators {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  background-color: #ddd;
+  border-radius: 50%;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.indicator.active {
+  width: 15px;
+  height: 15px;
+  background-color: #333;
+}
+
+/* --- Destacados --- */
+.destacados {
+  padding: 2em;
+  background-color: #fff;
+}
+
+.destacados h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 1em;
+  text-align: center;
+}
+
+.productos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.producto {
+  width: 300px;
+  padding: 1em;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+
+.producto:hover {
+  transform: scale(1.05);
+}
+
+.producto img {
+  width: 100%;
+  height: 200px; /* Altura fija para consistencia en grid */
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.precio {
+  display: block;
+  margin-top: 0.5em;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #e30000;
+}
+
+/* --- Modal / Pop-up --- */
+/* NOTA: Renombrado a .pop-up-overlay para coincidir con React */
+.pop-up-overlay {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  /* Centrado moderno con Flexbox */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px); /* Efecto de desenfoque opcional */
+}
+
+.pop-up-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh; /* Evita que se salga de la pantalla */
+  overflow-y: auto;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  animation: popUpFadeIn 0.3s ease-in-out;
+  position: relative;
+}
+
+@keyframes popUpFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.cerrar-pop-up {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.cerrar-pop-up:hover {
+  color: #000;
+}
+
+.pop-up-image {
+  max-width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  /* Carrusel */
+  .anuncios {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16/9; /* Mantiene proporción en móvil */
+  }
+
+  .carousel-button {
+    font-size: 1.5rem;
+    padding: 6px;
+  }
+
+  /* Destacados */
+  .producto {
+    width: 100%;
+    max-width: 350px;
+  }
+
+  .destacados h2 {
+    font-size: 1.5rem;
+  }
+
+  /* Modal */
+  .pop-up-content {
+    padding: 15px;
+    width: 95%;
+  }
+}

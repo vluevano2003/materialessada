@@ -1,0 +1,238 @@
+/* --- Layout General --- */
+.container {
+  padding: 10px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.productos-section-wrapper h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* --- Barra de Filtros --- */
+.filtros {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  background-color: #f8f8f8;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 5px 10px;
+  width: fit-content;
+  max-width: 98%;
+  margin: 0 auto 20px auto;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.filtro-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 100%;
+}
+
+.filtros label {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #444;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.filtros input,
+.filtros select {
+  height: 32px;
+  padding: 0 8px;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+.filtros input[type="text"] { width: 130px; }
+.filtros input[type="number"] { width: 70px; }
+.filtros select { width: 130px; cursor: pointer; }
+
+/* Botones de Filtro */
+.filtro-actions {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.filtros button {
+  height: 32px;
+  padding: 0 12px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+#boton-filtrar { background-color: #005BC2; color: white; }
+#boton-filtrar:hover { background-color: #004494; }
+
+#quitar-filtros { background-color: #6c757d; color: white; }
+#quitar-filtros:hover { background-color: #5a6268; }
+
+/* --- Lista de Productos (Grid) --- */
+.productos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 50px;
+}
+
+.producto {
+  width: 240px;
+  padding: 15px;
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.producto:hover { 
+  transform: translateY(-3px); 
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+}
+
+.producto img {
+  width: 100%;
+  height: 160px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.producto h3 { font-size: 1rem; margin: 8px 0; color: #333; }
+.producto .precio { font-size: 1.1rem; font-weight: bold; color: #E30000; }
+
+/* --- Modal / Pop-up --- */
+.pop-up-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7); 
+  backdrop-filter: blur(2px);
+  z-index: 9999;
+  display: block; 
+}
+
+.pop-up-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  animation: popUpAnimation 0.3s ease-out;
+}
+
+@keyframes popUpAnimation {
+  from { opacity: 0; transform: translate(-50%, -45%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+.cerrar-pop-up {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  line-height: 1;
+  z-index: 10;
+}
+.cerrar-pop-up:hover { color: #E30000; }
+
+.pop-up-image {
+  max-width: 100%;
+  max-height: 250px;
+  object-fit: contain;
+  margin: 10px auto;
+  display: block;
+}
+
+.pop-up-content h3 { font-size: 1.5rem; color: #005BC2; margin-top: 10px; }
+.pop-up-content p { font-size: 1rem; color: #555; margin: 8px 0; }
+.pop-up-content .precio { font-size: 1.5rem; color: #E30000; margin-top: 15px; font-weight: bold; }
+
+/* --- Responsive (Móvil) --- */
+.toggle-filtros {
+  display: none; 
+  width: 100%;
+  padding: 10px;
+  background-color: #005BC2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  .toggle-filtros { display: block; }
+
+  .filtros {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    align-items: stretch;
+    gap: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  .filtros.mostrar { display: flex; }
+
+  .filtro-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+
+  .filtros input, .filtros select, .filtros button {
+    width: 100%;
+    height: 40px;
+  }
+  
+  .filtro-actions {
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 5px;
+  }
+  
+  .producto { width: 100%; max-width: 100%; }
+}
