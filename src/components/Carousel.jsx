@@ -43,11 +43,11 @@ function Carousel() {
   };
 
   if (images.length === 0) {
-    return <section className="anuncios"><p>Cargando anuncios...</p></section>;
-  }
+    return <div className="carousel-placeholder"><p>Cargando anuncios...</p></div>;
+  }
 
-  return (
-    <section className="anuncios">
+  return (
+    <div className="carousel-container">
       <div className="carousel" id="carousel">
         {images.map((url, index) => (
           <div 
@@ -72,8 +72,8 @@ function Carousel() {
           ></span>
         ))}
       </div>
-    </section>
-  );
+    </div>
+  );
 }
 
 export default Carousel;
