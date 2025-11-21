@@ -1,31 +1,47 @@
-import React, { useState } from 'react';
-import Sidebar from '../Sidebar'; 
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Sidebar from "../Sidebar";
 
 function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  
-  const openSidebar = () => setIsSidebarOpen(true);
+
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   const closeSidebar = () => setIsSidebarOpen(false);
 
   return (
     <>
-      <nav>
-        <button id="hamburger" className="hamburger" onClick={openSidebar}>
-          &#9776;
-        </button>
-        <div className="banner">
-          <img src="/images/logo-nb.PNG" alt="Logo de Materiales SADA" className="logo" />
-          <h1>Materiales SADA</h1>
-        </div>
+      <header>
+        <nav className="navbar">
+          {/* Botón Hamburger */}
+          <button id="hamburger-btn" onClick={toggleSidebar}>
+            &#9776;
+          </button>
 
-        <ul className="menu">
-          <li><Link to="/">Menú</Link></li>
-          <li><Link to="/productos">Productos</Link></li>
-          <li><Link to="/informacion">Conócenos</Link></li>
-        </ul>
-      </nav>
-      
+          {/* Logo y Título */}
+          <div className="nav-group logo-section">
+            <img
+              src="/images/logo-nb.PNG"
+              alt="Logo Materiales SADA"
+              className="nav-logo"
+            />
+            <h1 className="brand-title">Materiales SADA</h1>
+          </div>
+
+          {/* Menú Desktop */}
+          <div className="nav-group right desktop-only">
+            <Link to="/" className="nav-item">
+              Menú
+            </Link>
+            <Link to="/productos" className="nav-item">
+              Productos
+            </Link>
+            <Link to="/informacion" className="nav-item">
+              Conócenos
+            </Link>
+          </div>
+        </nav>
+      </header>
+
       <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
     </>
   );

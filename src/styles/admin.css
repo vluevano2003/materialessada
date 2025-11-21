@@ -11,16 +11,17 @@ body {
   justify-content: space-between;
   align-items: center;
   background-color: #005bc2;
-  padding: 0 30px; /* Ajustado para respetar el height */
+  padding: 0 30px;
   font-family: "Arial", sans-serif;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  height: 60px;
+  /* AUMENTADO: Igual que en la pública, 80px */
+  height: 80px; 
 }
 
 .nav-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
 
 /* --- Navigation Items --- */
@@ -28,28 +29,30 @@ body {
   color: white;
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.95rem;
-  padding: 8px 15px;
-  border-radius: 5px;
+  /* AUMENTADO: Texto más grande */
+  font-size: 1.15rem; 
+  /* AUMENTADO: Padding más generoso (arriba/abajo 14px) */
+  padding: 14px 24px; 
+  border-radius: 6px;
   transition: all 0.3s ease;
   border: 1px solid transparent;
 }
 
 .nav-item:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .nav-item.active {
-  background-color: rgba(255, 255, 255, 0.25);
+  background-color: rgba(255, 255, 255, 0.3);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* --- User & Logout Utilities --- */
 .welcome-text {
   color: #e0e0e0;
-  font-size: 0.9rem;
-  margin-right: 10px;
+  font-size: 1rem; /* Texto de bienvenida un poco más grande */
+  margin-right: 15px;
   font-weight: normal;
 }
 
@@ -62,14 +65,15 @@ body {
   background-color: #d32f2f !important;
   color: white !important;
   border: none;
-  padding: 8px 15px;
-  font-size: 0.9rem;
-  border-radius: 4px;
+  /* AUMENTADO: Botón salir igual de grande que los enlaces */
+  padding: 14px 24px; 
+  font-size: 1.1rem;
+  border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s;
   white-space: nowrap;
-  margin-left: 10px;
+  margin-left: 15px;
 }
 
 .logout-btn:hover {
@@ -80,8 +84,8 @@ body {
 main {
   padding: 0;
   margin: 0;
-  /* Resta la altura del header (60px) para evitar scroll innecesario */
-  height: calc(100vh - 60px);
+  /* AJUSTADO: Restamos los 80px del nuevo header */
+  height: calc(100vh - 80px);
   overflow: hidden;
 }
 
@@ -90,7 +94,8 @@ main {
   display: none;
   background: none;
   border: none;
-  font-size: 1.8rem;
+  /* AUMENTADO */
+  font-size: 2.2rem; 
   color: white;
   cursor: pointer;
 }
@@ -117,17 +122,17 @@ main {
   .nav-group.left {
     position: fixed;
     top: 0;
-    left: -280px;
-    width: 280px;
+    left: -300px;
+    width: 300px;
     height: 100vh;
     background-color: #004494;
     flex-direction: column;
     align-items: flex-start;
-    padding: 70px 20px 20px 20px;
+    padding: 90px 25px 25px 25px; /* Ajustado padding superior */
     transition: left 0.3s ease;
     z-index: 1000;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
-    gap: 15px;
+    gap: 20px;
   }
 
   .nav-group.left.open {
@@ -136,9 +141,11 @@ main {
 
   .nav-item {
     width: 100%;
-    padding: 12px;
-    font-size: 1rem;
+    /* Botones móviles grandes */
+    padding: 15px; 
+    font-size: 1.1rem;
     box-sizing: border-box;
+    text-align: left;
   }
 
   .mobile-only-options {
@@ -154,11 +161,12 @@ main {
   .logout-btn {
     width: 100%;
     margin-left: 0;
-    padding: 12px;
+    padding: 15px;
+    font-size: 1.1rem;
   }
 
   .welcome-text {
     margin-bottom: 10px;
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 }

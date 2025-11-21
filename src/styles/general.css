@@ -1,4 +1,6 @@
-/* Estilos Globales */
+/* =========================================
+   GENERAL
+   ========================================= */
 * {
   margin: 0;
   padding: 0;
@@ -11,207 +13,245 @@ body,
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
+  font-family: "Arial", sans-serif;
+  background-color: #f4f6f8;
 }
 
-main,
-.container {
+main {
   flex: 1;
 }
 
-/* --- Navegación (Desktop) --- */
-nav {
+/* =========================================
+   HEADER & NAVBAR
+   ========================================= */
+.navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1em;
-  background-color: #fff;
-  box-shadow: 0 4px 8px #0001;
-}
-
-.banner {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.logo {
-  width: 50px;
-  height: auto;
-}
-
-.banner h1 {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
-}
-
-.menu {
-  list-style: none;
-  display: flex;
-  gap: 20px;
-  flex: 1;
-  justify-content: center;
-}
-
-.menu li a {
-  text-decoration: none;
-  color: #333;
-  font-weight: bold;
-  padding: 0.5em;
-  border-radius: 5px;
-  transition: color 0.3s;
-  font-size: 1.20rem;
-}
-
-.menu li a:hover {
-  color: #e30000;
-}
-
-/* Botón Login (Opcional si se usa en Header) */
-.login-button {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  background-color: #e30000;
-  color: #fff;
-  padding: 0.5em 1em;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  margin-left: auto;
-}
-
-.login-button:hover {
-  background-color: #b30000;
-}
-
-/* --- Sidebar & Hamburger (Móvil) --- */
-.hamburger {
-  display: none; /* Oculto en desktop */
-  font-size: 2rem;
-  background: white;
-  border: none;
-  color: #333;
-  position: fixed;
-  top: 15px;
-  left: 15px;
-  z-index: 9999;
-  padding: 5px 10px;
-  border-radius: 5px;
+  padding: 0 30px;
+  background-color: #005bc2;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  /* AUMENTADO: De 60px a 80px para dar más aire */
+  height: 80px; 
+  color: white;
+  position: relative;
+  z-index: 100;
 }
 
-.sidebar {
+/* Grupos de navegación  */
+.nav-group {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Un poco más de espacio entre elementos */
+}
+
+/* --- Logo Section --- */
+.nav-logo {
+  height: 50px; /* AUMENTADO: Logo más grande */
+  width: auto;
+  background: white;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.brand-title {
+  margin: 0;
+  /* AUMENTADO: Texto del título mucho más grande */
+  font-size: 1.8rem; 
+  font-weight: bold;
+  color: #fff;
+  white-space: nowrap;
+  margin-left: 12px;
+}
+
+/* --- Menú Desktop --- */
+.nav-group.right {
+  justify-content: flex-end;
+}
+
+.nav-item {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+  /* AUMENTADO: Más relleno arriba/abajo y texto más grande */
+  padding: 14px 25px; 
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  font-size: 1.15rem; /* Texto de botones más grande */
+  border: 1px solid transparent;
+}
+
+/* Efecto Hover */
+.nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* --- Hamburger Button (Móvil) --- */
+#hamburger-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  /* AUMENTADO: Icono más grande */
+  font-size: 2.2rem; 
+  color: #fff;
+  cursor: pointer;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+/* =========================================
+   El menú lateral (Sidebar)
+   ========================================= */
+.sidebar-drawer {
   position: fixed;
-  left: -250px;
   top: 0;
-  height: 100%;
-  width: 250px;
-  background-color: #fff;
+  left: -300px; /* Un poco más ancho */
+  height: 100vh;
+  width: 300px; /* Un poco más ancho */
+  background-color: #004494; 
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
   transition: left 0.3s ease;
-  padding: 1em;
-  z-index: 1000;
+  padding: 25px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
 }
 
-.sidebar ul {
-  list-style: none;
-  padding: 0;
+.sidebar-drawer.open {
+  left: 0;
 }
 
-.sidebar li {
-  margin: 1.2em 0;
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 15px;
+  color: white;
 }
 
-.sidebar a {
-  text-decoration: none;
-  font-size: 1.2rem;
-  color: #333;
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Más espacio entre botones del sidebar */
+}
+
+.nav-item.block {
   display: block;
-}
-
-.sidebar a:hover {
-  color: #e30000;
+  width: 100%;
+  text-align: left;
 }
 
 .close-btn {
-  font-size: 1.5rem;
+  font-size: 2.5rem; /* X más grande */
   cursor: pointer;
-  display: block;
-  text-align: right;
+  color: #fff;
+  line-height: 1;
 }
 
-/* --- Footer --- */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1500;
+}
+
+/* =========================================
+   FOOTER
+   ========================================= */
 footer {
-  background-color: #333;
+  background-color: #222;
   color: #fff;
-  padding: 2em 1em;
+  padding: 50px 20px;
   text-align: center;
+  margin-top: auto;
+  border-top: 5px solid #005bc2;
 }
 
 .footer-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .footer-logo {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .footer-image {
-  width: 60px;
+  width: 120px !important; /* Logo footer más grande */
   height: auto;
-  margin-bottom: 10px;
+  padding: 5px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.footer-logo h2 {
+  color: #fff !important;
+  font-size: 1.6rem; /* Título footer más grande */
+  margin: 0;
+  font-weight: bold;
+}
+
+.footer-info {
+  text-align: left;
+  border-left: 1px solid #555;
+  padding-left: 30px;
 }
 
 .footer-info p {
-  margin: 5px 0;
-  text-align: left;
+  margin: 10px 0;
+  font-size: 1.05rem; /* Texto footer más grande */
+  color: #ccc; 
+  line-height: 1.5;
 }
 
 .footer-bottom {
-  margin-top: 1em;
+  margin-top: 40px;
   border-top: 1px solid #444;
-  padding-top: 1em;
+  padding-top: 20px;
   font-size: 0.9rem;
+  color: #888;
 }
 
-/* --- Responsive (Tablet & Móvil) --- */
+/* =========================================
+   Móvil
+   ========================================= */
 @media (max-width: 768px) {
-  /* Header Ajustes */
-  nav {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    padding-top: 60px; /* Espacio para el hamburger fijo */
+  #hamburger-btn { display: block; }
+  .desktop-only { display: none; }
+  
+  /* Título un poco más pequeño en celular, pero más grande que antes */
+  .brand-title { font-size: 1.4rem; } 
+  .navbar { padding: 0 15px; }
+
+  .brand-title{
+    visibility: hidden;
   }
 
-  .banner h1 {
-    font-size: 1.2rem;
-    text-align: center;
-  }
-
-  /* Ocultar menú superior, mostrar hamburger */
-  nav .menu {
-    display: none;
-  }
-
-  .hamburger {
-    display: block;
-  }
-
-  /* Footer Ajustes */
   .footer-container {
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    gap: 30px;
   }
 
-  .footer-info p {
+  .footer-info {
     text-align: center;
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid #444;
+    padding-top: 25px;
+    width: 100%;
   }
 }

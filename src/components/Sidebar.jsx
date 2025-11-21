@@ -1,29 +1,33 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-// Recibe props para saber si está abierto y la función para cerrarse
 function Sidebar({ isOpen, onClose }) {
-  const sidebarStyle = {
-    left: isOpen ? "0" : "-250px",
-  };
+  const sidebarClass = isOpen ? "sidebar-drawer open" : "sidebar-drawer";
 
   return (
-    <div className="sidebar" style={sidebarStyle}>
-      <span className="close-btn" onClick={onClose}>
-        &times;
-      </span>
-      <ul>
-        <li>
-          <Link to="/">Menú</Link>
-        </li>
-        <li>
-          <Link to="/productos">Productos</Link>
-        </li>
-        <li>
-          <Link to="/informacion">Conócenos</Link>
-        </li>
-      </ul>
-    </div>
+    <>
+      {isOpen && <div className="sidebar-overlay" onClick={onClose}></div>}
+
+      <div className={sidebarClass}>
+        <div className="sidebar-header">
+          <span className="close-btn" onClick={onClose}>
+            &times;
+          </span>
+        </div>
+
+        <nav className="sidebar-nav">
+          <Link to="/" className="nav-item block" onClick={onClose}>
+            Menú Principal
+          </Link>
+          <Link to="/productos" className="nav-item block" onClick={onClose}>
+            Productos
+          </Link>
+          <Link to="/informacion" className="nav-item block" onClick={onClose}>
+            Conócenos
+          </Link>
+        </nav>
+      </div>
+    </>
   );
 }
 

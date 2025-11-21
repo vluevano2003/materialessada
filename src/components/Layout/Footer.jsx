@@ -40,7 +40,7 @@ function Footer() {
     <footer>
       <div className="footer-container">
         <div className="footer-logo">
-          <img src="/images/logo-nb.PNG" alt="Logo de Materiales SADA" className="footer-image" />
+          <img src="/images/logo-blanco.png" alt="Logo de Materiales SADA" className="footer-image" />
           <h2>Materiales SADA</h2>
         </div>
         <div className="footer-info">
