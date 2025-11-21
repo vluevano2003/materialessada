@@ -70,21 +70,18 @@ main {
 }
 
 .nav-item {
-  text-decoration: none;
   color: #fff;
   font-weight: 600;
-  /* AUMENTADO: Más relleno arriba/abajo y texto más grande */
   padding: 14px 25px; 
   border-radius: 6px;
   transition: all 0.3s ease;
-  font-size: 1.15rem; /* Texto de botones más grande */
-  border: 1px solid transparent;
+  font-size: 1.15rem;
+  border: none;
 }
 
 /* Efecto Hover */
 .nav-item:hover {
   background-color: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.4);
 }
 
 /* --- Hamburger Button (Móvil) --- */
