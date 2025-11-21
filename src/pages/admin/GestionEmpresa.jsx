@@ -11,6 +11,7 @@ const formDefaults = {
   footerTelefono: "",
   footerEmail: "",
   footerBottom: "© 2024 Materiales SADA. Todos los derechos reservados.",
+  mensajeAnuncio: "", 
 };
 
 function GestionEmpresa() {
@@ -56,6 +57,15 @@ function GestionEmpresa() {
     <section className="form-container">
       <h2>Información de la Empresa</h2>
       <form id="editar-form" onSubmit={handleSubmit}>
+        <label htmlFor="mensajeAnuncio">Texto de Anuncio:</label>
+        <input
+          type="text"
+          id="mensajeAnuncio"
+          value={formData.mensajeAnuncio}
+          onChange={handleChange}
+          placeholder='Ej: VENTA ÚNICAMENTE EN TIENDA...'
+        />
+
         <label htmlFor="sobreNosotros">Sobre Nosotros:</label>
         <textarea
           id="sobreNosotros"

@@ -236,3 +236,18 @@
   
   .producto { width: 100%; max-width: 100%; }
 }
+
+/* --- Anuncio Rojo Destacado --- */
+.anuncio-rojo {
+  padding: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.anuncio-rojo p {
+  color: #cc0000;
+  font-weight: bold;
+  margin: 0;
+  font-size: 1.5em;
+}
