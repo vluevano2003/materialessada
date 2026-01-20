@@ -1,60 +1,30 @@
-// src/pages/Home.js (MODIFICADO)
-import React, { useState, useEffect } from 'react';
-import { db } from '../firebaseConfig';
-import { doc, getDoc } from 'firebase/firestore';
-import Carousel from '../components/Carousel';
-import DestacadosSection from '../components/DestacadosSection';
+import DestacadosSection from "../components/DestacadosSection";
 
-import '../styles/home.css';
-
-const PROMO_DEFAULTS = {
-    promoTitulo: "Cargando...", 
-    promoSubtitulo: "Cargando...",
-    promoBotonTexto: "Cargando...",
-    promoBotonLink: "#",
-};
+import "../styles/home.css";
 
 function Home() {
-    const [promoData, setPromoData] = useState(PROMO_DEFAULTS); 
 
-    // Cargar la data de promoción
-    useEffect(() => {
-        const loadPromoData = async () => {
-            const docRef = doc(db, "config", "menu_promo"); 
-            
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                setPromoData({ ...PROMO_DEFAULTS, ...docSnap.data() });
-            } 
-        };
-        loadPromoData();
-    }, []);
-
-    return (
-        <>
-            <section className="hero-section">
-                {/* Lado Izquierdo: Contenido Promocional */}
-                <div className="promo-content">
-                    <img src="/images/logo-nb.PNG" alt="Logo de Materiales SADA" className="promo-image" />
-                    <h1>{promoData.promoTitulo}</h1>
-                    <p>{promoData.promoSubtitulo}</p>
-                    <a 
-                        href={promoData.promoBotonLink} 
-                        className="promo-button"
-                    >
-                        {promoData.promoBotonTexto}
-                    </a>
-                </div>
-
-                {/* Lado Derecho: Carrusel */}
-                <div className="carousel-wrapper">
-                    <Carousel />
-                </div>
-            </section>
-
-            <DestacadosSection />
-        </>
-    );
+  return (
+    <>
+      <section className="main-section">
+        <div className="main-overlay">
+          <div className="promo-content">
+            <img
+              src="/images/logo-nb.PNG"
+              alt="Logo de Materiales SADA"
+              className="promo-image"
+            />
+            <h1>MATERIALES SADA</h1>
+            <p>Tu aliado de construcción local en el sur de Veracruz.</p>
+            <a href="/productos" className="promo-button">
+              Conoce nuestros productos
+            </a>
+          </div>
+        </div>
+      </section>
+      <DestacadosSection />
+    </>
+  );
 }
 
 export default Home;

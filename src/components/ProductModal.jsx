@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 function ProductModal({ product, isOpen, onClose }) {
+  
+  // BLOQUEAR SCROLL
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   if (!isOpen || !product) return null;
 
   const handleOverlayClick = (e) => {
-    // Cierra el modal solo si se hace clic en el fondo (overlay), no en el contenido interno
     if (e.target.classList.contains("pop-up-overlay")) {
       onClose();
     }
@@ -14,23 +26,40 @@ function ProductModal({ product, isOpen, onClose }) {
   const modalContent = (
     <div className="pop-up-overlay" onClick={handleOverlayClick}>
       <div className="pop-up-content">
-        <span className="cerrar-pop-up" onClick={onClose}>&times;</span>
+        <button className="cerrar-pop-up" onClick={onClose} aria-label="Cerrar">&times;</button>
         
-        <img src={product.imagen} alt={product.nombre} className="pop-up-image" />
-        
-        <h3>{product.nombre}</h3>
-        <p className="precio">Precio: ${product.precio}</p>
-        <p>Categoría: {product.categoria}</p>
-        <p>Marca: {product.marca}</p>
-        <p>Disponibilidad: {product.disponibilidad}</p>
-        <p>{product.descripcion}</p>
+        <div className="pop-up-body">
+          {/* Imagen */}
+          <div className="pop-up-image-container">
+            <img src={product.imagen} alt={product.nombre} className="pop-up-image" />
+          </div>
+
+          {/* Información */}
+          <div className="pop-up-info">
+            <span className="badge-categoria">{product.categoria}</span>
+            
+            <h3 className="pop-up-title">{product.nombre}</h3>
+            
+            <p className="precio-destacado">${product.precio}</p>
+            
+            <div className="meta-datos">
+              <p><strong>Marca:</strong> {product.marca}</p>
+              <p><strong>Disponibilidad:</strong> <span className={product.disponibilidad === 'Agotado' ? 'text-red' : 'text-green'}>{product.disponibilidad}</span></p>
+            </div>
+
+            <div className="divider"></div>
+
+            <div className="descripcion-container">
+              <h4>Descripción:</h4>
+              <p className="descripcion-texto">{product.descripcion}</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 
-  // Renderiza en 'portal-root' si existe en index.html, si no, usa body
   const portalRoot = document.getElementById('portal-root') || document.body;
-  
   return ReactDOM.createPortal(modalContent, portalRoot);
 }
 

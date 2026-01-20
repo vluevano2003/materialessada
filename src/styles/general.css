@@ -31,7 +31,6 @@ main {
   padding: 0 30px;
   background-color: #005bc2;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  /* AUMENTADO: De 60px a 80px para dar más aire */
   height: 80px; 
   color: white;
   position: relative;
@@ -42,12 +41,12 @@ main {
 .nav-group {
   display: flex;
   align-items: center;
-  gap: 15px; /* Un poco más de espacio entre elementos */
+  gap: 15px;
 }
 
 /* --- Logo Section --- */
 .nav-logo {
-  height: 50px; /* AUMENTADO: Logo más grande */
+  height: 50px;
   width: auto;
   background: white;
   padding: 4px;
@@ -56,7 +55,6 @@ main {
 
 .brand-title {
   margin: 0;
-  /* AUMENTADO: Texto del título mucho más grande */
   font-size: 1.8rem; 
   font-weight: bold;
   color: #fff;
@@ -70,18 +68,32 @@ main {
 }
 
 .nav-item {
+  position: relative;
   color: #fff;
-  font-weight: 600;
-  padding: 14px 25px; 
-  border-radius: 6px;
-  transition: all 0.3s ease;
-  font-size: 1.15rem;
+  font-weight: 500;
+  font-size: 1.05rem;
+  padding: 0.75rem 2.5rem;;
   border: none;
 }
 
 /* Efecto Hover */
+.nav-item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0%;
+  height: 2px;
+  background: white;
+  transition: width 0.3s ease;
+}
+
+.nav-item:hover::after {
+  width: 100%;
+}
+
 .nav-item:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  opacity: 0.9;
 }
 
 /* --- Hamburger Button (Móvil) --- */
@@ -89,7 +101,6 @@ main {
   display: none;
   background: transparent;
   border: none;
-  /* AUMENTADO: Icono más grande */
   font-size: 2.2rem; 
   color: #fff;
   cursor: pointer;
@@ -103,9 +114,9 @@ main {
 .sidebar-drawer {
   position: fixed;
   top: 0;
-  left: -300px; /* Un poco más ancho */
+  left: -300px;
   height: 100vh;
-  width: 300px; /* Un poco más ancho */
+  width: 300px;
   background-color: #004494; 
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
   transition: left 0.3s ease;
@@ -132,7 +143,7 @@ main {
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Más espacio entre botones del sidebar */
+  gap: 15px;
 }
 
 .nav-item.block {
@@ -142,7 +153,7 @@ main {
 }
 
 .close-btn {
-  font-size: 2.5rem; /* X más grande */
+  font-size: 2.5rem;
   cursor: pointer;
   color: #fff;
   line-height: 1;
@@ -173,22 +184,27 @@ footer {
 .footer-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 50px;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0;
   max-width: 1200px;
   margin: 0 auto;
 }
 
+/* LOGO */
 .footer-logo {
   display: flex;
+  flex: 1; 
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-width: 250px;
+  border-right: 1px solid #555; 
+  padding-right: 20px;
 }
 
 .footer-image {
-  width: 120px !important; /* Logo footer más grande */
+  width: 120px !important;
   height: auto;
   padding: 5px;
   border-radius: 8px;
@@ -197,26 +213,94 @@ footer {
 
 .footer-logo h2 {
   color: #fff !important;
-  font-size: 1.6rem; /* Título footer más grande */
+  font-size: 1.6rem;
   margin: 0;
   font-weight: bold;
 }
 
+/* ENLACES */
+.footer-links {
+  flex: 1;
+  text-align: center;
+  min-width: 200px;
+  border-right: 1px solid #555; 
+  padding-top: 1rem;
+}
+
+.footer-links h3 {
+  color: #fff;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 0;
+}
+
+.footer-links ul {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.3s;
+  font-size: 1rem;
+}
+
+.footer-links a:hover {
+  color: #0088ff;
+  text-decoration: none;
+}
+
+/* INFO CONTACTO */
 .footer-info {
+  flex: 1.2;
   text-align: left;
-  border-left: 1px solid #555;
   padding-left: 30px;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .footer-info p {
-  margin: 10px 0;
-  font-size: 1.05rem; /* Texto footer más grande */
+  margin: 5px 0;
+  font-size: 0.95rem;
   color: #ccc; 
   line-height: 1.5;
 }
 
+.footer-info strong {
+  color: white;
+}
+
+.btn-facebook {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1877F2;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-top: 15px;
+  transition: background-color 0.3s ease, transform 0.2s;
+  width: fit-content;
+}
+
+.btn-facebook:hover {
+  background-color: #145dbf;
+  transform: translateY(-2px);
+  color: white;
+}
+
 .footer-bottom {
-  margin-top: 40px;
+  margin-top: 50px;
   border-top: 1px solid #444;
   padding-top: 20px;
   font-size: 0.9rem;
@@ -230,25 +314,54 @@ footer {
   #hamburger-btn { display: block; }
   .desktop-only { display: none; }
   
-  /* Título un poco más pequeño en celular, pero más grande que antes */
-  .brand-title { font-size: 1.4rem; } 
-  .navbar { padding: 0 15px; }
+  .navbar { 
+    padding: 0 15px; 
+    position: relative;
+  }
 
-  .brand-title{
-    visibility: hidden;
+  .brand-title {
+    display: none; 
+  }
+
+  .nav-group.logo-section {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: center;
   }
 
   .footer-container {
     flex-direction: column;
-    gap: 30px;
+    align-items: center;
+    gap: 20px;
+  }
+
+  footer {
+    padding: 30px 20px; 
+  }
+
+  .footer-logo, .footer-links {
+    text-align: center;
+    width: 100%;
+    border-right: none;
+    padding-right: 0;
+    border-bottom: 1px solid #444;
+    padding-bottom: 20px; 
+  }
+  
+  .footer-links {
+    margin: 0; 
   }
 
   .footer-info {
     text-align: center;
-    border-left: none;
-    padding-left: 0;
-    border-top: 1px solid #444;
-    padding-top: 25px;
+    padding: 0;
     width: 100%;
+    border: none;
+    align-items: center; 
+  }
+  
+  .footer-bottom {
+      margin-top: 20px;
   }
 }
