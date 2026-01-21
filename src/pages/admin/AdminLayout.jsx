@@ -7,15 +7,10 @@ import { onAuthStateChanged } from "firebase/auth";
 import "../../styles/admin.css";
 
 function AdminLayout() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userName, setUserName] = useState("");
   const [userRole, setUserRole] = useState("");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    document.body.classList.add("page-admin");
-    return () => document.body.classList.remove("page-admin");
-  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -27,12 +22,7 @@ function AdminLayout() {
           if (userDoc.exists()) {
             const data = userDoc.data();
             setUserRole(data.tipoCuenta);
-
-            // Prioriza 'nombreUsuario' de la BD, si no, deriva del email
-            const nameFromDb = data.nombreUsuario;
-            setUserName(
-              nameFromDb || (user.email ? user.email.split("@")[0] : "Usuario")
-            );
+            setUserName(data.nombreUsuario || user.email.split("@")[0]);
           } else {
             setUserName(user.email.split("@")[0]);
           }
@@ -54,86 +44,65 @@ function AdminLayout() {
     }
   };
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const closeMenu = () => setIsMenuOpen(false);
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   return (
-    <>
-      <header>
-        <nav className="navbar">
-          <button id="hamburger-btn" onClick={toggleMenu}>
+    <div className="admin-container">
+      {/* SIDEBAR IZQUIERDA */}
+      <aside className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
+        <div className="sidebar-header">
+          <div className="logo">PANEL DE CONTROL</div>
+          <button className="close-sidebar-btn" onClick={toggleSidebar}>&times;</button>
+        </div>
+
+        <nav className="sidebar-nav">
+          <NavLink to="/admin" end className="nav-link" onClick={() => setIsSidebarOpen(false)}>
+            <span className="icon">📦</span> Gestión Inventario
+          </NavLink>
+
+          {userRole === "admin" && (
+            <NavLink to="/admin/usuarios" className="nav-link" onClick={() => setIsSidebarOpen(false)}>
+              <span className="icon">👥</span> Usuarios
+            </NavLink>
+          )}
+
+          <NavLink to="/admin/gestion" className="nav-link" onClick={() => setIsSidebarOpen(false)}>
+            <span className="icon">🌐</span> Gestión Página
+          </NavLink>
+          
+          <div className="nav-divider"></div>
+          
+          <NavLink to="/admin/cuenta" className="nav-link" onClick={() => setIsSidebarOpen(false)}>
+            <span className="icon">⚙️</span> Mi Cuenta
+          </NavLink>
+        </nav>
+
+        <div className="sidebar-footer">
+          <button className="logout-sidebar-btn" onClick={handleLogout}>
+            Cerrar Sesión
+          </button>
+        </div>
+      </aside>
+
+      {/* CONTENIDO DERECHO */}
+      <div className="main-content">
+        <header className="top-bar">
+          <button className="hamburger-btn" onClick={toggleSidebar}>
             &#9776;
           </button>
-
-          {/* Menú Izquierdo / Móvil */}
-          <div
-            className={`nav-group left ${isMenuOpen ? "open" : ""}`}
-            id="mobile-menu"
-          >
-            <NavLink to="/admin" end className="nav-item" onClick={closeMenu}>
-              Gestión de Inventario
-            </NavLink>
-
-            {userRole === "admin" && (
-              <NavLink
-                to="/admin/usuarios"
-                className="nav-item"
-                onClick={closeMenu}
-              >
-                Gestión de Usuarios
-              </NavLink>
-            )}
-
-            <NavLink
-              to="/admin/gestion"
-              className="nav-item"
-              onClick={closeMenu}
-            >
-              Gestión de Página
-            </NavLink>
-
-            <div className="mobile-only-options">
-              <span className="welcome-text">Hola, {userName}</span>
-              <NavLink
-                to="/admin/cuenta"
-                className="nav-item"
-                onClick={closeMenu}
-              >
-                Datos de la Cuenta
-              </NavLink>
-              <button
-                className="logout-btn"
-                onClick={() => {
-                  closeMenu();
-                  handleLogout();
-                }}
-              >
-                Cerrar Sesión
-              </button>
-            </div>
-          </div>
-
-          {/* Menú Derecho / Desktop */}
-          <div className="nav-group right desktop-only">
-            <span className="welcome-text">
-              Bienvenido, <strong>{userName}</strong>
+          
+          <div className="top-bar-right">
+            <span className="welcome-msg">
+              Hola, <strong>{userName}</strong> <span className="role-badge">{userRole}</span>
             </span>
-
-            <NavLink to="/admin/cuenta" className="nav-item">
-              Datos de la Cuenta
-            </NavLink>
-
-            <button className="logout-btn" onClick={handleLogout}>
-              Cerrar Sesión
-            </button>
           </div>
-        </nav>
-      </header>
+        </header>
 
-      <main>
-        <Outlet />
-      </main>
-    </>
+        <main className="outlet-container">
+          <Outlet />
+        </main>
+      </div>
+    </div>
   );
 }
 

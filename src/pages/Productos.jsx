@@ -18,7 +18,6 @@ const initialFilters = {
 function Productos() {
   const [allProducts, setAllProducts] = useState([]);
   const [displayedProducts, setDisplayedProducts] = useState([]);
-  const [mensajeAnuncio, setMensajeAnuncio] = useState(); 
 
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
@@ -27,18 +26,6 @@ function Productos() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-
-  // Cargar el mensaje de anuncio
-  useEffect(() => {
-    const loadAnuncio = async () => {
-      const docRef = doc(db, "empresa", "info");
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists() && docSnap.data().mensajeAnuncio) {
-        setMensajeAnuncio(docSnap.data().mensajeAnuncio);
-      }
-    };
-    loadAnuncio();
-  }, []);
 
   useEffect(() => {
     const productosRef = collection(db, "productos");
@@ -122,11 +109,6 @@ function Productos() {
 
   return (
     <div className="container">
-      {mensajeAnuncio && (
-        <div className="anuncio-rojo">
-          <p>{mensajeAnuncio}</p>
-        </div>
-      )}
 
       <Filtros
         filters={filters}

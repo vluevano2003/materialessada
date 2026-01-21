@@ -33,8 +33,7 @@
 .filtro-item {
   display: flex;
   align-items: center;
-  gap: 5px;
-  height: 100%;
+  gap: 8px;
 }
 
 .filtros label {
@@ -42,19 +41,25 @@
   font-weight: bold;
   color: #444;
   white-space: nowrap;
-  line-height: 1;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
 }
 
+/* Estandarización de inputs, select y botones */
 .filtros input,
-.filtros select {
+.filtros select,
+.filtros button {
   height: 32px;
-  padding: 0 8px;
+  padding: 0 10px;
   font-size: 0.9rem;
   border: 1px solid #ccc;
   border-radius: 4px;
   outline: none;
   box-sizing: border-box;
-  background-color: white;
+  margin: 0;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .filtros input[type="text"] { width: 130px; }
@@ -69,17 +74,11 @@
 }
 
 .filtros button {
-  height: 32px;
-  padding: 0 12px;
-  font-size: 0.85rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s;
+  cursor: pointer;
+  background-color: white;
 }
 
 #boton-filtrar { background-color: #005BC2; color: white; }
@@ -128,66 +127,6 @@
 .producto h3 { font-size: 1rem; margin: 8px 0; color: #333; }
 .producto .precio { font-size: 1.1rem; font-weight: bold; color: #E30000; }
 
-/* --- Modal / Pop-up --- */
-.pop-up-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7); 
-  backdrop-filter: blur(2px);
-  z-index: 9999;
-  display: block; 
-}
-
-.pop-up-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  padding: 25px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 500px;
-  max-height: 90vh;
-  overflow-y: auto;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  animation: popUpAnimation 0.3s ease-out;
-}
-
-@keyframes popUpAnimation {
-  from { opacity: 0; transform: translate(-50%, -45%); }
-  to { opacity: 1; transform: translate(-50%, -50%); }
-}
-
-.cerrar-pop-up {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #333;
-  cursor: pointer;
-  line-height: 1;
-  z-index: 10;
-}
-.cerrar-pop-up:hover { color: #E30000; }
-
-.pop-up-image {
-  max-width: 100%;
-  max-height: 250px;
-  object-fit: contain;
-  margin: 10px auto;
-  display: block;
-}
-
-.pop-up-content h3 { font-size: 1.5rem; color: #005BC2; margin-top: 10px; }
-.pop-up-content p { font-size: 1rem; color: #555; margin: 8px 0; }
-.pop-up-content .precio { font-size: 1.5rem; color: #E30000; margin-top: 15px; font-weight: bold; }
-
 /* --- Responsive (Móvil) --- */
 .toggle-filtros {
   display: none; 
@@ -210,9 +149,10 @@
     flex-direction: column;
     width: 100%;
     align-items: stretch;
-    gap: 10px;
-    padding: 15px;
+    gap: 15px;
+    padding: 20px;
     margin-bottom: 20px;
+    height: auto;
   }
 
   .filtros.mostrar { display: flex; }
@@ -220,34 +160,26 @@
   .filtro-item {
     flex-direction: column;
     align-items: flex-start;
-    gap: 3px;
+    gap: 8px;
+    height: auto;
   }
 
-  .filtros input, .filtros select, .filtros button {
-    width: 100%;
-    height: 40px;
+  .filtros input[type="text"], 
+  .filtros input[type="number"], 
+  .filtros select {
+    width: 100% !important; 
+    height: 45px;
+    font-size: 1rem;
   }
   
   .filtro-actions {
     flex-direction: row;
     gap: 10px;
-    margin-top: 5px;
+    margin-top: 10px;
   }
-  
-  .producto { width: 100%; max-width: 100%; }
-}
 
-/* --- Anuncio Rojo Destacado --- */
-.anuncio-rojo {
-  padding: 10px;
-  margin-bottom: 20px;
-  text-align: center;
-  border-radius: 5px;
-}
-
-.anuncio-rojo p {
-  color: #cc0000;
-  font-weight: bold;
-  margin: 0;
-  font-size: 1.5em;
+  .filtro-actions button {
+    flex: 1;
+    height: 45px;
+  }
 }

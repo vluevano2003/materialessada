@@ -1,9 +1,5 @@
-// src/pages/admin/Gestion.jsx
-
 import React, { useEffect } from "react";
-import GestionCarousel from "./GestionCarousel";
 import GestionEmpresa from "./GestionEmpresa";
-
 import "../../styles/gestion.css";
 
 function Gestion() {
@@ -15,14 +11,15 @@ function Gestion() {
   }, []);
 
   return (
-    <div className="gestion-container">
-      {/* Panel Izquierdo: Carrusel */}
-      <div className="panel-izquierdo">
-        <GestionCarousel />
-      </div>
+    <div className="gestion-page">
+      <header className="gestion-header">
+        <div className="header-info">
+          <h1>Configuración General</h1>
+          <p className="subtitle">Administra la información de contacto y pie de página de la empresa.</p>
+        </div>
+      </header>
 
-      {/* Panel Derecho: Información */}
-      <div className="panel-derecho">
+      <div className="gestion-content">
         <GestionEmpresa />
       </div>
     </div>

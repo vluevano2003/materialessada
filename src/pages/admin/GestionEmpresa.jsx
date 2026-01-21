@@ -11,24 +11,30 @@ const formDefaults = {
   footerTelefono: "",
   footerEmail: "",
   footerBottom: "© 2024 Materiales SADA. Todos los derechos reservados.",
-  mensajeAnuncio: "", 
 };
 
 function GestionEmpresa() {
   const [formData, setFormData] = useState(formDefaults);
   const [isLoading, setIsLoading] = useState(true);
-  const [message, setMessage] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+  const [message, setMessage] = useState({ text: "", type: "" });
 
   useEffect(() => {
     const loadData = async () => {
-      const docRef = doc(db, "empresa", "info");
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setFormData({ ...formDefaults, ...docSnap.data() });
-      } else {
-        setFormData(formDefaults);
+      try {
+        const docRef = doc(db, "empresa", "info");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          // Combinamos defaults con datos para asegurar que no falten campos
+          setFormData({ ...formDefaults, ...docSnap.data() });
+        } else {
+          setFormData(formDefaults);
+        }
+      } catch (error) {
+        console.error("Error cargando datos:", error);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
     loadData();
   }, []);
@@ -40,133 +46,160 @@ function GestionEmpresa() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSaving(true);
+    setMessage({ text: "", type: "" });
+
     try {
+      // Guardamos la info. Nota: Si en la DB existía 'mensajeAnuncio', 
+      // se mantendrá ahí a menos que lo borres manualmente o sobrescribas todo el documento sin merge.
+      // Al usar setDoc sin {merge: true} (comportamiento por defecto es sobrescribir si no se especifica merge), 
+      // se limpiarán campos antiguos no incluidos en formData.
       await setDoc(doc(db, "empresa", "info"), formData);
-      setMessage("Información actualizada correctamente.");
-      setTimeout(() => setMessage(""), 3000);
+      setMessage({ text: "¡Información actualizada correctamente!", type: "success" });
     } catch (error) {
       console.error("Error al guardar:", error);
-      setMessage("Error al actualizar la información.");
-      setTimeout(() => setMessage(""), 3000);
+      setMessage({ text: "Error al guardar los cambios.", type: "error" });
+    } finally {
+      setIsSaving(false);
+      setTimeout(() => setMessage({ text: "", type: "" }), 3000);
     }
   };
 
-  if (isLoading) return <h3>Cargando...</h3>;
+  if (isLoading) {
+    return <div className="loading-state">Cargando configuración...</div>;
+  }
 
   return (
-    <section className="form-container">
-      <h2>Información de la Empresa</h2>
-      <form id="editar-form" onSubmit={handleSubmit}>
-        <label htmlFor="mensajeAnuncio">Texto de Anuncio:</label>
-        <input
-          type="text"
-          id="mensajeAnuncio"
-          value={formData.mensajeAnuncio}
-          onChange={handleChange}
-          placeholder='Ej: VENTA ÚNICAMENTE EN TIENDA...'
-        />
+    <div className="form-card full-form">
+      <div className="form-header-simple">
+        <h3>🏢 Detalles de la Organización</h3>
+      </div>
 
-        <label htmlFor="sobreNosotros">Sobre Nosotros:</label>
-        <textarea
-          id="sobreNosotros"
-          rows="3"
-          value={formData.sobreNosotros}
-          onChange={handleChange}
-          required
-        ></textarea>
+      <form onSubmit={handleSubmit} className="modern-form">
+        {/* DATOS GENERALES */}
+        <div className="form-section-title">Información Pública</div>
+        <div className="form-sections-grid">
+          <div className="form-section">
+            <div className="form-group">
+              <label htmlFor="direccion">Dirección Física</label>
+              <input
+                type="text"
+                id="direccion"
+                value={formData.direccion}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-        <label htmlFor="direccion">Dirección:</label>
-        <input
-          type="text"
-          id="direccion"
-          value={formData.direccion}
-          onChange={handleChange}
-          required
-        />
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "10px",
-          }}
-        >
-          <div>
-            <label htmlFor="telefono">Teléfono:</label>
-            <input
-              type="tel"
-              id="telefono"
-              value={formData.telefono}
-              onChange={handleChange}
-              required
-            />
+            <div className="form-row">
+              <div className="form-group">
+                <label htmlFor="telefono">Teléfono Principal</label>
+                <input
+                  type="tel"
+                  id="telefono"
+                  value={formData.telefono}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="email">Correo Electrónico</label>
+                <input
+                  type="email"
+                  id="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
           </div>
-          <div>
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-        </div>
 
-        <h3>Pie de Página (Footer)</h3>
-
-        <label htmlFor="footerDireccion">Dirección Footer:</label>
-        <input
-          type="text"
-          id="footerDireccion"
-          value={formData.footerDireccion}
-          onChange={handleChange}
-          required
-        />
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "10px",
-          }}
-        >
-          <div>
-            <label htmlFor="footerTelefono">Teléfono Footer:</label>
-            <input
-              type="tel"
-              id="footerTelefono"
-              value={formData.footerTelefono}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="footerEmail">Email Footer:</label>
-            <input
-              type="email"
-              id="footerEmail"
-              value={formData.footerEmail}
-              onChange={handleChange}
-              required
-            />
+          <div className="form-section">
+            <div className="form-group">
+              <label htmlFor="sobreNosotros">Sobre Nosotros (Descripción)</label>
+              <textarea
+                id="sobreNosotros"
+                rows="8"
+                value={formData.sobreNosotros}
+                onChange={handleChange}
+                required
+                placeholder="Describe la historia y misión de la empresa..."
+              ></textarea>
+            </div>
           </div>
         </div>
 
-        <label htmlFor="footerBottom">Copyright:</label>
-        <input
-          type="text"
-          id="footerBottom"
-          value={formData.footerBottom}
-          onChange={handleChange}
-          required
-        />
+        <hr className="divider" />
 
-        <button type="submit">Guardar Cambios</button>
+        {/* FOOTER */}
+        <div className="form-section-title">Configuración del Pie de Página (Footer)</div>
+        <div className="form-sections-grid">
+            <div className="form-section">
+                <div className="form-group">
+                    <label htmlFor="footerDireccion">Dirección en Footer</label>
+                    <input
+                        type="text"
+                        id="footerDireccion"
+                        value={formData.footerDireccion}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="footerBottom">Texto Copyright</label>
+                    <input
+                        type="text"
+                        id="footerBottom"
+                        value={formData.footerBottom}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+            </div>
+
+            <div className="form-section">
+                <div className="form-row">
+                    <div className="form-group">
+                        <label htmlFor="footerTelefono">Teléfono Footer</label>
+                        <input
+                            type="tel"
+                            id="footerTelefono"
+                            value={formData.footerTelefono}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="footerEmail">Email Footer</label>
+                        <input
+                            type="email"
+                            id="footerEmail"
+                            value={formData.footerEmail}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div className="form-footer-action">
+            {message.text && (
+                <div className={`status-message ${message.type}`}>
+                    {message.text}
+                </div>
+            )}
+            <button 
+                type="submit" 
+                className="btn-primary-large"
+                disabled={isSaving}
+            >
+                {isSaving ? "Guardando..." : "Guardar Cambios"}
+            </button>
+        </div>
       </form>
-
-      {message && <div className="mensaje">{message}</div>}
-    </section>
+    </div>
   );
 }
 

@@ -24,6 +24,7 @@ function Cuenta() {
   const [message, setMessage] = useState({ text: "", type: "" });
   const [isLoading, setIsLoading] = useState(true);
 
+  // Efecto para la clase del body (opcional, para estilos globales)
   useEffect(() => {
     document.body.classList.add("page-cuenta");
     return () => {
@@ -31,6 +32,7 @@ function Cuenta() {
     };
   }, []);
 
+  // Cargar datos del usuario
   useEffect(() => {
     const user = auth.currentUser;
     if (!user) {
@@ -60,7 +62,7 @@ function Cuenta() {
     setMessage({ text, type });
     setTimeout(() => {
       setMessage({ text: "", type: "" });
-    }, 3000);
+    }, 4000);
   };
 
   const handleGeneralChange = (e) => {
@@ -112,7 +114,6 @@ function Cuenta() {
     }
 
     try {
-      // Re-autenticación necesaria antes de cambiar contraseña por seguridad
       const credential = EmailAuthProvider.credential(
         user.email,
         currentPassword
@@ -132,100 +133,144 @@ function Cuenta() {
     }
   };
 
-  if (isLoading) return <h3>Cargando...</h3>;
+  if (isLoading)
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
 
   return (
-    <section className="account-wrapper">
-      <h1>Mi Cuenta</h1>
+    <div className="account-page">
+      {/* Header Estilo Inventario */}
+      <header className="account-header">
+        <div className="header-info">
+          <h1>Mi Cuenta</h1>
+          <p className="subtitle">Administra tu información personal y seguridad.</p>
+        </div>
+      </header>
 
       {message.text && (
-        <div className={`message-banner ${message.type}`}>{message.text}</div>
+        <div className={`message-banner ${message.type}`}>
+          {message.type === "success" ? "✅ " : "⚠️ "}
+          {message.text}
+        </div>
       )}
 
-      <div className="account-container">
-        <div className="account-panel">
-          <h2>Datos Personales</h2>
-          <form onSubmit={handleGeneralSubmit}>
-            <label htmlFor="username">Nombre de Usuario:</label>
-            <input
-              type="text"
-              id="username"
-              required
-              value={generalData.username}
-              onChange={handleGeneralChange}
-            />
+      <div className="account-content-grid">
+        {/* Tarjeta 1: Datos Personales */}
+        <section className="form-card">
+          <div className="card-header">
+            <h3>👤 Datos Personales</h3>
+          </div>
+          <form onSubmit={handleGeneralSubmit} className="modern-form">
+            <div className="form-group">
+              <label htmlFor="username">Nombre de Usuario</label>
+              <input
+                type="text"
+                id="username"
+                value={generalData.username}
+                onChange={handleGeneralChange}
+                required
+              />
+            </div>
 
-            <label htmlFor="email">Correo Electrónico:</label>
-            <input
-              type="email"
-              id="email"
-              disabled
-              className="input-disabled"
-              value={generalData.email}
-              onChange={handleGeneralChange}
-            />
+            <div className="form-group">
+              <label htmlFor="email">Correo Electrónico</label>
+              <input
+                type="email"
+                id="email"
+                value={generalData.email}
+                disabled
+                className="input-disabled"
+              />
+            </div>
 
-            <label htmlFor="phone">Teléfono:</label>
-            <input
-              type="text"
-              id="phone"
-              required
-              value={generalData.phone}
-              onChange={handleGeneralChange}
-            />
+            <div className="form-row">
+              <div className="form-group">
+                <label htmlFor="phone">Teléfono</label>
+                <input
+                  type="text"
+                  id="phone"
+                  value={generalData.phone}
+                  onChange={handleGeneralChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="tipo">Tipo de Cuenta</label>
+                <input
+                  type="text"
+                  id="tipo"
+                  value={generalData.tipo}
+                  disabled
+                  className="input-disabled"
+                />
+              </div>
+            </div>
 
-            <label htmlFor="tipo">Tipo de Cuenta:</label>
-            <input
-              type="text"
-              id="tipo"
-              disabled
-              className="input-disabled"
-              value={generalData.tipo}
-              onChange={handleGeneralChange}
-            />
-
-            <button type="submit">Guardar Cambios</button>
+            <div className="form-footer">
+              <button type="submit" className="btn-primary-large">
+                Guardar Cambios
+              </button>
+            </div>
           </form>
-        </div>
+        </section>
 
-        <div className="account-panel">
-          <h2>Actualizar Contraseña</h2>
-          <form onSubmit={handlePasswordSubmit}>
-            <label htmlFor="currentPassword">Contraseña Actual:</label>
-            {/* Asegúrate de que el ID coincida con el estado: currentPassword */}
-            <input
-              type="password"
-              id="currentPassword"
-              required
-              value={passwordData.currentPassword}
-              onChange={handlePasswordChange}
-            />
+        {/* Tarjeta 2: Seguridad */}
+        <section className="form-card">
+          <div className="card-header">
+            <h3>🔒 Seguridad y Contraseña</h3>
+          </div>
+          <form onSubmit={handlePasswordSubmit} className="modern-form">
+            <div className="form-group">
+              <label htmlFor="currentPassword">Contraseña Actual</label>
+              <input
+                type="password"
+                id="currentPassword"
+                value={passwordData.currentPassword}
+                onChange={handlePasswordChange}
+                required
+                placeholder="••••••••"
+              />
+            </div>
 
-            <label htmlFor="newPassword">Nueva Contraseña:</label>
-            <input
-              type="password"
-              id="newPassword"
-              minLength="6"
-              required
-              value={passwordData.newPassword}
-              onChange={handlePasswordChange}
-            />
+            <div className="form-row">
+              <div className="form-group">
+                <label htmlFor="newPassword">Nueva Contraseña</label>
+                <input
+                  type="password"
+                  id="newPassword"
+                  value={passwordData.newPassword}
+                  onChange={handlePasswordChange}
+                  minLength="6"
+                  required
+                  placeholder="Nueva contraseña"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="confirmPassword">Confirmar</label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  value={passwordData.confirmPassword}
+                  onChange={handlePasswordChange}
+                  minLength="6"
+                  required
+                  placeholder="Repetir contraseña"
+                />
+              </div>
+            </div>
 
-            <label htmlFor="confirmPassword">Confirmar Contraseña:</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              minLength="6"
-              required
-              value={passwordData.confirmPassword}
-              onChange={handlePasswordChange}
-            />
-
-            <button type="submit">Actualizar Contraseña</button>
+            <div className="form-footer">
+              <button type="submit" className="btn-secondary-action">
+                Actualizar Contraseña
+              </button>
+            </div>
           </form>
-        </div>
+        </section>
       </div>
-    </section>
+    </div>
   );
 }
 

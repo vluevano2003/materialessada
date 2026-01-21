@@ -1,9 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../firebaseConfig";
-import { collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  onSnapshot,
+} from "firebase/firestore";
 import "../../styles/inventario.css";
 
 function Inventario() {
+  // Estados de UI
+  const [showForm, setShowForm] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Estados del Formulario
   const [editId, setEditId] = useState(null);
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -16,11 +28,11 @@ function Inventario() {
   const [foto, setFoto] = useState(null);
   const [fotoPreview, setFotoPreview] = useState("");
 
+  // Estados de Datos
   const [productos, setProductos] = useState([]);
   const [marcas, setMarcas] = useState([]);
   const [categorias, setCategorias] = useState([]);
 
-  // Carga de productos y cálculo dinámico de filtros (marcas/categorías)
   useEffect(() => {
     const productosRef = collection(db, "productos");
     const unsubscribe = onSnapshot(productosRef, (snapshot) => {
@@ -43,11 +55,13 @@ function Inventario() {
     return () => unsubscribe();
   }, []);
 
-  // Estilo específico para el body en esta página
-  useEffect(() => {
-    document.body.classList.add("page-inventario");
-    return () => document.body.classList.remove("page-inventario");
-  }, []);
+  // LÓGICA DE BÚSQUEDA
+  const productosFiltrados = productos.filter(
+    (p) =>
+      p.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.marca.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.categoria.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
 
   const resetForm = () => {
     setEditId(null);
@@ -55,36 +69,19 @@ function Inventario() {
     setDescripcion("");
     setPrecio("");
     setDisponibilidad("");
-    setMarca(marcas.length > 0 ? marcas[0] : "");
-    setCategoria(categorias.length > 0 ? categorias[0] : "");
+    setMarca("");
+    setCategoria("");
     setNuevaMarca("");
     setNuevaCategoria("");
     setFoto(null);
     setFotoPreview("");
-    // Reset manual del input file
-    const fileInput = document.getElementById("foto");
-    if (fileInput) fileInput.value = "";
+    setShowForm(false);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (isNaN(parseFloat(precio)) || parseFloat(precio) <= 0) {
-      alert("Por favor, ingrese un precio válido.");
-      return;
-    }
-    if (isNaN(parseInt(disponibilidad)) || parseInt(disponibilidad) < 0) {
-      alert("Por favor, ingrese una disponibilidad válida.");
-      return;
-    }
-
     const marcaFinal = nuevaMarca.trim() || marca;
     const categoriaFinal = nuevaCategoria.trim() || categoria;
-
-    if (!nombre || !descripcion || !marcaFinal || !categoriaFinal) {
-      alert("Por favor, complete todos los campos.");
-      return;
-    }
 
     const producto = {
       nombre,
@@ -97,29 +94,28 @@ function Inventario() {
     };
 
     try {
-      // Lógica de subida a ImgBB
       if (foto) {
         const formData = new FormData();
         formData.append("image", foto);
-        const response = await fetch("https://api.imgbb.com/1/upload?key=e8b72545a514b6da09673f2dc63502e9", {
-          method: "POST",
-          body: formData,
-        });
+        const response = await fetch(
+          "https://api.imgbb.com/1/upload?key=e8b72545a514b6da09673f2dc63502e9",
+          {
+            method: "POST",
+            body: formData,
+          },
+        );
         const data = await response.json();
         producto.foto = data.data.url;
       }
 
       if (editId) {
         await updateDoc(doc(db, "productos", editId), producto);
-        alert("Producto actualizado exitosamente.");
       } else {
         await addDoc(collection(db, "productos"), producto);
-        alert("Producto agregado exitosamente.");
       }
       resetForm();
     } catch (error) {
-      console.error("Error al guardar el producto:", error);
-      alert("Hubo un error al guardar el producto.");
+      console.error("Error:", error);
     }
   };
 
@@ -132,147 +128,275 @@ function Inventario() {
     setMarca(prod.marca);
     setCategoria(prod.categoria);
     setFotoPreview(prod.foto || "");
-    
-    const fileInput = document.getElementById("foto");
-    if (fileInput) fileInput.value = "";
-    
-    const formElement = document.querySelector('.inventory-form-panel');
-    if(formElement) formElement.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const handleDelete = async (id) => {
-    if (window.confirm("¿Estás seguro de que deseas eliminar este producto?")) {
-      try {
-        await deleteDoc(doc(db, "productos", id));
-        alert("Producto eliminado exitosamente.");
-      } catch (error) {
-        console.error("Error al eliminar el producto:", error);
-      }
-    }
-  };
-
-  const handleFotoChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFoto(file);
-      setFotoPreview(URL.createObjectURL(file));
-    }
+    setShowForm(true);
   };
 
   return (
-    <section className="inventory-wrapper">
-      <div className="inventory-container">
-        
-        <div className="inventory-form-panel">
-          <h2>{editId ? "Editar Producto" : "Agregar Producto"}</h2>
-          <form id="producto-form" onSubmit={handleSubmit}>
-            <input type="hidden" id="producto-id" value={editId || ""} />
-
-            <label htmlFor="nombre">Nombre del producto:</label>
-            <input
-              type="text" id="nombre" required
-              value={nombre} onChange={(e) => setNombre(e.target.value)}
-            />
-
-            <label htmlFor="descripcion">Descripción:</label>
-            <textarea
-              id="descripcion" required
-              value={descripcion} onChange={(e) => setDescripcion(e.target.value)}
-            ></textarea>
-
-            <label htmlFor="precio">Precio:</label>
-            <input
-              type="number" id="precio" required
-              value={precio} onChange={(e) => setPrecio(e.target.value)}
-            />
-
-            <label htmlFor="marca">Marca:</label>
-            <select id="marca" value={marca} onChange={(e) => setMarca(e.target.value)}>
-              {marcas.map((m) => <option key={m} value={m}>{m}</option>)}
-            </select>
-            <input
-              type="text" id="nueva-marca" placeholder="Agregar nueva marca"
-              value={nuevaMarca} onChange={(e) => setNuevaMarca(e.target.value)}
-            />
-
-            <label htmlFor="categoria">Categoría:</label>
-            <select id="categoria" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
-              {categorias.map((c) => <option key={c} value={c}>{c}</option>)}
-            </select>
-            <input
-              type="text" id="nueva-categoria" placeholder="Agregar nueva categoría"
-              value={nuevaCategoria} onChange={(e) => setNuevaCategoria(e.target.value)}
-            />
-
-            <label htmlFor="disponibilidad">Disponibilidad:</label>
-            <input
-              type="number" id="disponibilidad" required
-              value={disponibilidad} onChange={(e) => setDisponibilidad(e.target.value)}
-            />
-
-            <label htmlFor="foto">Foto:</label>
-            <input type="file" id="foto" accept="image/*" onChange={handleFotoChange} />
-            
-            {fotoPreview && (
-              <img
-                src={fotoPreview} alt="Vista previa"
-                style={{ maxWidth: "100px", borderRadius: "5px", display: "block", margin: "10px auto" }}
-              />
-            )}
-
-            <button type="submit">Guardar</button>
-            {editId && (
-                <button type="button" id="cancelar-edicion" onClick={resetForm}>Cancelar</button>
-            )}
-          </form>
+    <div className="inventory-page">
+      <header className="inventory-header">
+        <div className="header-info">
+          <h1>Inventario de Productos</h1>
+          <p className="subtitle">Visualización y control de existencias.</p>
         </div>
+        {!showForm && (
+          <button className="btn-add-main" onClick={() => setShowForm(true)}>
+            Agregar Nuevo Producto
+          </button>
+        )}
+      </header>
 
-        <div className="inventory-list-panel">
-          <h2>Lista de Productos</h2>
-          
-          <div className="table-scroll-container">
-            <table id="productos-table">
+      <div className="inventory-content">
+        {showForm ? (
+          /* VISTA DEL FORMULARIO */
+          <div className="form-container-overlay">
+            <div className="form-card full-form">
+              <div className="form-header">
+                <button className="btn-back-list" onClick={resetForm}>
+                  ← Regresar
+                </button>
+                <h3>
+                  {editId ? "📝 Editar Producto" : "➕ Agregar Nuevo Producto"}
+                </h3>
+              </div>
+
+              <form onSubmit={handleSubmit} className="modern-form">
+                <div className="form-sections-grid">
+                  <div className="form-section">
+                    <div className="form-group">
+                      <label>Nombre del Producto</label>
+                      <input
+                        type="text"
+                        value={nombre}
+                        onChange={(e) => setNombre(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Descripción</label>
+                      <textarea
+                        value={descripcion}
+                        onChange={(e) => setDescripcion(e.target.value)}
+                        rows="5"
+                      ></textarea>
+                    </div>
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label>Precio ($)</label>
+                        <input
+                          type="number"
+                          value={precio}
+                          onChange={(e) => setPrecio(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Stock inicial</label>
+                        <input
+                          type="number"
+                          value={disponibilidad}
+                          onChange={(e) => setDisponibilidad(e.target.value)}
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="form-section">
+                    <div className="form-group">
+                      <label>Marca</label>
+                      <div className="select-input-group">
+                        <select
+                          value={marca}
+                          onChange={(e) => setMarca(e.target.value)}
+                        >
+                          <option value="">Seleccionar existente...</option>
+                          {marcas.map((m) => (
+                            <option key={m} value={m}>
+                              {m}
+                            </option>
+                          ))}
+                        </select>
+                        <input
+                          type="text"
+                          placeholder="Nueva marca"
+                          value={nuevaMarca}
+                          onChange={(e) => setNuevaMarca(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="form-group">
+                      <label>Categoría</label>
+                      <div className="select-input-group">
+                        <select
+                          value={categoria}
+                          onChange={(e) => setCategoria(e.target.value)}
+                        >
+                          <option value="">Seleccionar existente...</option>
+                          {categorias.map((c) => (
+                            <option key={c} value={c}>
+                              {c}
+                            </option>
+                          ))}
+                        </select>
+                        <input
+                          type="text"
+                          placeholder="Nueva categoría"
+                          value={nuevaCategoria}
+                          onChange={(e) => setNuevaCategoria(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="form-group">
+                      <label>Imagen</label>
+                      <div className="file-upload-zone">
+                        <input
+                          type="file"
+                          id="foto"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              setFoto(file);
+                              setFotoPreview(URL.createObjectURL(file));
+                            }
+                          }}
+                        />
+                        {fotoPreview ? (
+                          <img
+                            src={fotoPreview}
+                            alt="Preview"
+                            className="img-preview"
+                          />
+                        ) : (
+                          <div></div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="form-footer">
+                  <button
+                    type="button"
+                    className="btn-secondary"
+                    onClick={resetForm}
+                  >
+                    Cancelar
+                  </button>
+                  <button type="submit" className="btn-primary-large">
+                    {editId ? "Guardar Cambios" : "Crear Producto"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        ) : (
+          /* VISTA DE TABLA */
+          <section className="list-card full-list">
+            <div className="list-header-actions">
+              <div className="search-box">
+                <input
+                  type="text"
+                  placeholder="Buscar por nombre, marca o categoría..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="table-responsive">
+              <table>
                 <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Descripción</th>
-                    <th>Precio</th>
-                    <th>Marca</th>
+                  <tr>
+                    <th>Producto</th>
                     <th>Categoría</th>
+                    <th>Marca</th>
+                    <th>Precio</th>
                     <th>Stock</th>
-                    <th>Foto</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
-                </tr>
+                  </tr>
                 </thead>
                 <tbody>
-                {productos.map((prod) => (
-                    <tr key={prod.id}>
-                    <td>{prod.nombre}</td>
-                    <td>{prod.descripcion}</td>
-                    <td>${prod.precio}</td>
-                    <td>{prod.marca}</td>
-                    <td>{prod.categoria}</td>
-                    <td>{prod.disponibilidad}</td>
-                    <td>
-                        {prod.foto ? (
-                        <img src={prod.foto} alt={prod.nombre} style={{ maxWidth: "80px", borderRadius: "4px" }} />
-                        ) : "Sin imagen"}
-                    </td>
-                    <td>
-                        <div className="acciones-btns">
-                        <button className="editar" onClick={() => handleEdit(prod)}>Editar</button>
-                        <button className="eliminar" onClick={() => handleDelete(prod.id)}>Eliminar</button>
-                        </div>
-                    </td>
+                  {productosFiltrados.length > 0 ? (
+                    productosFiltrados.map((prod) => (
+                      <tr key={prod.id}>
+                        <td data-label="Producto">
+                          <div className="product-cell">
+                            <img
+                              src={prod.foto || "../images/logo.png"}
+                              alt=""
+                            />
+                            <span className="p-name">{prod.nombre}</span>
+                          </div>
+                        </td>
+                        <td data-label="Categoría">
+                          <span className="badge category">
+                            {prod.categoria}
+                          </span>
+                        </td>
+                        <td data-label="Marca">
+                          <span className="badge brand">{prod.marca}</span>
+                        </td>
+                        <td className="p-price" data-label="Precio">
+                          ${prod.precio?.toLocaleString()}
+                        </td>
+                        <td className="p-stock" data-label="Stock">
+                          {prod.disponibilidad}
+                        </td>
+                        <td data-label="Estado">
+                          {prod.disponibilidad > 5 ? (
+                            <span className="status-pill in-stock">
+                              En Stock
+                            </span>
+                          ) : prod.disponibilidad > 0 ? (
+                            <span className="status-pill low-stock">
+                              Bajo Stock
+                            </span>
+                          ) : (
+                            <span className="status-pill no-stock">
+                              Agotado
+                            </span>
+                          )}
+                        </td>
+                        <td data-label="Acciones">
+                          <div className="action-buttons">
+                            <button
+                              className="icon-btn edit"
+                              title="Editar"
+                              onClick={() => handleEdit(prod)}
+                            >
+                              ✏️
+                            </button>
+                            <button
+                              className="icon-btn delete"
+                              title="Eliminar"
+                              onClick={() => {
+                                if (window.confirm("¿Eliminar producto?"))
+                                  deleteDoc(doc(db, "productos", prod.id));
+                              }}
+                            >
+                              🗑️
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="7" className="no-results">
+                        No se encontraron productos que coincidan con "
+                        {searchTerm}"
+                      </td>
                     </tr>
-                ))}
+                  )}
                 </tbody>
-            </table>
-          </div>
-        </div>
-
+              </table>
+            </div>
+          </section>
+        )}
       </div>
-    </section>
+    </div>
   );
 }
 

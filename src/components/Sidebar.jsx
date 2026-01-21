@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function Sidebar({ isOpen, onClose }) {
   const sidebarClass = isOpen ? "sidebar-drawer open" : "sidebar-drawer";
@@ -16,15 +16,27 @@ function Sidebar({ isOpen, onClose }) {
         </div>
 
         <nav className="sidebar-nav">
-          <Link to="/" className="nav-item block" onClick={onClose}>
+          <NavLink 
+            to="/" 
+            className={({ isActive }) => isActive ? "nav-item block active" : "nav-item block"}
+            onClick={onClose}
+          >
             Menú Principal
-          </Link>
-          <Link to="/productos" className="nav-item block" onClick={onClose}>
+          </NavLink>
+          <NavLink 
+            to="/productos" 
+            className={({ isActive }) => isActive ? "nav-item block active" : "nav-item block"}
+            onClick={onClose}
+          >
             Productos
-          </Link>
-          <Link to="/informacion" className="nav-item block" onClick={onClose}>
+          </NavLink>
+          <NavLink 
+            to="/informacion" 
+            className={({ isActive }) => isActive ? "nav-item block active" : "nav-item block"}
+            onClick={onClose}
+          >
             Conócenos
-          </Link>
+          </NavLink>
         </nav>
       </div>
     </>

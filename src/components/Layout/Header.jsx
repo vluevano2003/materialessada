@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Sidebar from "../Sidebar";
 
 function Header() {
@@ -19,25 +19,37 @@ function Header() {
 
           {/* Logo y Título */}
           <div className="nav-group logo-section">
-            <img
-              src="/images/logo-nb.PNG"
-              alt="Logo Materiales SADA"
-              className="nav-logo"
-            />
+            <Link to="/">
+              <img
+                src="/images/logo-nb.PNG"
+                alt="Logo Materiales SADA"
+                className="nav-logo"
+              />
+            </Link>
             <h1 className="brand-title">Materiales SADA</h1>
           </div>
 
           {/* Menú Desktop */}
           <div className="nav-group right desktop-only">
-            <Link to="/" className="nav-item">
+            {/* Usamos NavLink para saber cuál está activo */}
+            <NavLink 
+              to="/" 
+              className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}
+            >
               Menú
-            </Link>
-            <Link to="/productos" className="nav-item">
+            </NavLink>
+            <NavLink 
+              to="/productos" 
+              className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}
+            >
               Productos
-            </Link>
-            <Link to="/informacion" className="nav-item">
+            </NavLink>
+            <NavLink 
+              to="/informacion" 
+              className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}
+            >
               Conócenos
-            </Link>
+            </NavLink>
           </div>
         </nav>
       </header>

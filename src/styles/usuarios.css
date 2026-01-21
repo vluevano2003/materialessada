@@ -1,206 +1,351 @@
-/* --- Layout Principal --- */
-.user-management-wrapper {
-  height: 100%;
-  width: 100%;
-  overflow-y: auto;
-  padding: 20px;
-  box-sizing: border-box;
-  background-color: #f4f4f4;
-}
-
-.user-management-container {
-  display: grid;
-  grid-template-columns: 1fr 2fr; /* Formulario (1/3) - Tabla (2/3) */
-  gap: 25px;
-  max-width: 1600px;
+/* .inventory-page actúa como namespace para evitar conflictos globales */
+.inventory-page {
+  animation: fadeIn 0.4s ease-out;
+  max-width: 1400px;
   margin: 0 auto;
-  padding-bottom: 50px;
+  padding: 10px;
 }
 
-/* --- Paneles / Tarjetas --- */
-.user-form-panel,
-.user-list-panel {
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  height: fit-content;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-h2 {
-  text-align: center;
-  color: #005bc2;
-  margin-top: 0;
-  margin-bottom: 20px;
-}
-
-/* --- Formulario --- */
-form {
+.inventory-header {
   display: flex;
-  flex-direction: column;
-  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
 }
 
-form label {
-  margin: 12px 0 5px;
-  font-weight: bold;
-  color: #333;
-  font-size: 0.9rem;
+.inventory-header h1 {
+  font-size: 1.6rem;
+  color: #1e293b;
+  margin: 0;
 }
 
-form input,
-form select {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.subtitle {
+  color: #64748b;
   font-size: 0.95rem;
-  width: 100%;
-  box-sizing: border-box;
-  transition: border-color 0.3s;
+  margin: 4px 0 0 0;
 }
 
-form input:focus,
-form select:focus {
-  border-color: #005bc2;
-  outline: none;
-}
-
-form button[type="submit"] {
-  margin-top: 25px;
-  padding: 12px;
-  background-color: #005bc2;
-  color: white;
-  font-size: 1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s;
-  width: 100%;
-}
-
-form button[type="submit"]:hover {
+.btn-add-main {
   background-color: #004494;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.95rem;
 }
 
-/* --- Mensajes de Feedback --- */
-.message-box {
-  margin-top: 15px;
-  padding: 10px;
-  border-radius: 5px;
-  text-align: center;
-  font-size: 0.9rem;
-  font-weight: bold;
-}
-.success {
-  background-color: #d4edda;
-  color: #155724;
-}
-.error {
-  background-color: #f8d7da;
-  color: #721c24;
+.btn-add-main:hover {
+  background-color: #003366;
 }
 
-/* --- Tabla de Usuarios --- */
-.table-scroll-container {
-  max-height: 70vh;
-  height: auto;
+/* Buscador */
+.list-header-actions {
+  margin-bottom: 1.5rem;
+}
+.search-box input {
+  width: 100%;
+  max-width: 450px;
+  padding: 12px 15px;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  font-size: 1rem;
+}
+.search-box input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+/* Tabla y Tarjeta Principal */
+.list-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.table-responsive {
+  max-height: 600px;
   overflow-y: auto;
-  border: 1px solid #eee;
-  border-radius: 5px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
 }
 
-table {
+.inventory-page table {
   width: 100%;
   border-collapse: collapse;
-  text-align: center;
 }
 
-thead {
-  background-color: #005bc2;
-  color: white;
-  position: sticky; /* Mantiene cabecera fija */
-  top: 0;
-  z-index: 10;
-}
-
-th,
-td {
-  padding: 12px 10px;
-  border-bottom: 1px solid #eee;
-  vertical-align: middle;
-  font-size: 0.9rem;
-}
-
-/* Badges y Acciones */
-.status-badge {
-  padding: 4px 10px;
-  border-radius: 15px;
+.inventory-page th {
+  background: #f8fafc;
+  color: #64748b;
+  font-weight: 600;
   font-size: 0.8rem;
-  font-weight: bold;
-  display: inline-block;
-}
-.status-badge.active {
-  background-color: #d4edda;
-  color: #155724;
-}
-.status-badge.inactive {
-  background-color: #f8d7da;
-  color: #721c24;
+  text-transform: uppercase;
+  padding: 14px 12px;
+  text-align: left;
+  border-bottom: 2px solid #f1f5f9;
+  position: sticky;
+  top: 0;
 }
 
-.action-btn {
+.inventory-page td {
+  padding: 16px 12px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+  text-align: left;
+}
+
+/* Estilos Específicos de Celdas de Usuario */
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  background: #e0f2fe;
+  color: #0284c7;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.p-name {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.text-muted {
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+.contact-info div {
+  font-size: 0.9rem;
+  color: #475569;
+  margin-bottom: 2px;
+}
+
+/* Badges */
+.badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.badge.role-admin { background: #fee2e2; color: #991b1b; }
+.badge.role-empleado { background: #f1f5f9; color: #475569; }
+
+.status-pill {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.in-stock { background: #dcfce7; color: #166534; }
+.no-stock { background: #f1f5f9; color: #94a3b8; }
+
+/* Botones de Acción en Tabla */
+.action-btn-text {
   padding: 6px 12px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 0.85rem;
+  font-weight: 600;
+  font-size: 0.8rem;
   transition: all 0.2s;
 }
-.btn-deactivate {
-  background-color: #dc3545;
-  color: white;
-}
-.btn-activate {
-  background-color: #28a745;
-  color: white;
+.btn-danger { background: #e30000; color: #fff; }
+.btn-danger:hover { background: #b20000; }
+
+.btn-success { background: #16a34a; color: #fff; }
+.btn-success:hover { background: #138a2e; }
+
+.row-inactive td {
+  opacity: 0.6;
 }
 
-/* --- Responsive (Móvil) --- */
+/* Formulario Overlay */
+.form-container-overlay {
+  animation: slideUp 0.3s ease-out;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  padding: 2rem;
+}
+
+.form-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.form-header h3 {
+  margin: 0;
+  color: #004494;
+}
+
+.btn-back-list {
+  background-color: #004494;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  border: none;
+}
+
+.btn-back-list:hover {
+  background-color: #003366;
+}
+
+.form-section-title {
+  color: #004494;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #e0f2fe;
+  display: inline-block;
+  padding-bottom: 4px;
+}
+
+.form-sections-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+.modern-form label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+.modern-form input, .modern-form select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fcfcfc;
+}
+.modern-form input:focus {
+  border-color: #3b82f6;
+  background: white;
+  outline: none;
+}
+.form-group { margin-bottom: 1.5rem; }
+
+.form-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.btn-primary-large {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-secondary {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Mensajes */
+.message-banner {
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.message-banner.success { background: #dcfce7; color: #166534; }
+.message-banner.error { background: #fee2e2; color: #991b1b; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Responsive Mobile */
 @media (max-width: 768px) {
-  .user-management-wrapper {
-    padding: 10px;
-    height: auto;
-    overflow-y: visible;
+  .form-sections-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .inventory-header { flex-direction: column; text-align: center; gap: 1rem; }
+  .btn-add-main { width: 100%; }
+  
+  .inventory-page table, 
+  .inventory-page thead, 
+  .inventory-page tbody, 
+  .inventory-page th, 
+  .inventory-page td, 
+  .inventory-page tr { display: block; }
+  
+  .inventory-page thead tr { position: absolute; top: -9999px; left: -9999px; }
+  
+  .inventory-page tr { 
+    margin-bottom: 1rem; 
+    border: 1px solid #e2e8f0; 
+    border-radius: 8px; 
+    background: white; 
+    padding: 1rem; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
   }
-
-  .user-management-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  
+  .inventory-page td { 
+    border: none; 
+    position: relative; 
+    padding-left: 0; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    text-align: right; 
+    padding: 8px 0; 
+    border-bottom: 1px solid #f1f5f9; 
   }
-
-  .user-form-panel,
-  .user-list-panel {
-    padding: 15px;
-  }
-
-  form input,
-  form select {
-    font-size: 16px; /* Evita zoom automático en iOS */
-  }
-
-  .table-scroll-container {
-    overflow-x: auto;
-    max-height: 400px;
-  }
-
-  table th,
-  table td {
-    white-space: nowrap;
-    padding: 8px;
-  }
+  
+  .inventory-page td:last-child { border-bottom: none; justify-content: center; padding-top: 15px; }
+  .inventory-page td::before { content: attr(data-label); font-weight: 700; color: #64748b; font-size: 0.85rem; text-transform: uppercase; margin-right: 15px; }
+  
+  .inventory-page td[data-label="Usuario"] { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .inventory-page td[data-label="Usuario"]::before { display: none; }
 }

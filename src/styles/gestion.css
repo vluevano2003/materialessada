@@ -1,171 +1,218 @@
-/* --- Layout Principal --- */
-.gestion-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 25px;
-  padding: 20px;
-  max-width: 1600px;
+.gestion-page {
+  animation: fadeIn 0.4s ease-out;
+  max-width: 1200px;
   margin: 0 auto;
-
-  /* Ajuste de altura y scroll */
-  height: 100%;
-  overflow-y: auto;
-  box-sizing: border-box;
-  padding-bottom: 50px;
+  padding: 10px;
 }
 
-/* --- Paneles / Tarjetas --- */
-.carousel-section,
-.form-container {
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  height: fit-content;
-}
-
-h1,
-h2,
-h3 {
-  text-align: center;
-  color: #005bc2;
-}
-
-h2{
-  margin-top: 1rem;
-}
-
-h3{
-  margin-top: 3rem;
-}
-
-/* --- Panel Izquierdo: Carrusel --- */
-#upload-form {
+.gestion-header {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-bottom: 25px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #eee;
-}
-
-#upload-form input[type="file"] {
-  border: 2px dashed #ccc;
-  padding: 20px;
-  text-align: center;
-  cursor: pointer;
-  background-color: #f9f9f9;
-  border-radius: 5px;
-}
-
-#carousel-preview {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 15px;
-}
-
-.carousel-item {
-  position: relative;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  aspect-ratio: 16/9;
-}
-
-.carousel-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.carousel-item button {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background: rgba(220, 53, 69, 0.9);
-  color: white;
-  border: none;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-weight: bold;
-  display: flex;
+  justify-content: space-between;
   align-items: center;
+  background: #ffffff;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.gestion-header h1 {
+  font-size: 1.6rem;
+  color: #1e293b;
+  margin: 0;
+}
+
+.subtitle {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin: 4px 0 0 0;
+}
+
+/* Contenedor del Formulario */
+.gestion-content {
+  display: flex;
   justify-content: center;
 }
 
-/* --- Panel Derecho: Formulario Empresa --- */
-form label {
-  display: block;
-  margin: 12px 0 5px;
-  font-weight: bold;
-  color: #333;
-  font-size: 0.9rem;
-}
-
-form input,
-form textarea {
+.form-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  padding: 2.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+}
+
+.form-header-simple {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.form-header-simple h3 {
+  color: #004494;
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.form-section-title {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #396496;
+    font-weight: 700;
+    margin-top: 0.5rem;
+}
+
+.form-sections-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+.modern-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.modern-form label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+.modern-form input,
+.modern-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
   font-size: 0.95rem;
+  background: #fcfcfc;
+  transition: all 0.2s;
   box-sizing: border-box;
-  transition: border-color 0.3s;
 }
 
-form input:focus,
-form textarea:focus {
-  border-color: #005bc2;
+.modern-form input:focus,
+.modern-form textarea:focus {
   outline: none;
+  border-color: #3b82f6;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
 }
 
-form textarea {
-  resize: vertical;
-  min-height: 80px;
+.modern-form textarea {
+    resize: none;
 }
 
-/* --- Botones y Mensajes --- */
-button[type="submit"] {
-  margin-top: 25px;
-  background-color: #005bc2;
+.divider {
+    border: 0;
+    margin: 1rem 0;
+}
+
+/* Footer del Formulario y Botones */
+.form-footer-action {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+  padding-top: 1rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.btn-primary-large {
+  background: #3b82f6;
   color: white;
   border: none;
-  padding: 12px;
-  font-size: 1rem;
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
   cursor: pointer;
-  border-radius: 5px;
-  width: 100%;
-  font-weight: bold;
-  transition: background-color 0.3s;
+  transition: all 0.2s;
 }
 
-button[type="submit"]:hover {
-  background-color: #004494;
+.btn-primary-large:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
 }
 
-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+.btn-primary-large:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+    transform: none;
 }
 
-.mensaje {
-  margin-top: 15px;
-  padding: 10px;
-  background-color: #d4edda;
-  color: #155724;
-  border-radius: 5px;
-  text-align: center;
-  font-weight: bold;
+/* Mensajes de Estado */
+.status-message {
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+    animation: fadeIn 0.3s ease-out;
 }
 
-/* --- Responsive (Móvil y Tablets) --- */
-@media (max-width: 1000px) {
-  .gestion-container {
+.status-message.success {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.status-message.error {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.loading-state {
+    text-align: center;
+    padding: 4rem;
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .form-sections-grid {
     grid-template-columns: 1fr;
-    padding: 10px;
-    gap: 20px;
+    gap: 1rem;
   }
+  
+  .form-card {
+      padding: 1.5rem;
+  }
+  
+  .form-row {
+      flex-direction: column;
+      gap: 0;
+  }
+
+  .form-footer-action {
+      flex-direction: column-reverse;
+      width: 100%;
+  }
+
+  .btn-primary-large {
+      width: 100%;
+  }
+  
+  .status-message {
+      width: 100%;
+      text-align: center;
+      box-sizing: border-box;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
