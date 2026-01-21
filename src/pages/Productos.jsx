@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../firebaseConfig";
-import { collection, onSnapshot, doc, getDoc } from "firebase/firestore"; // Importar doc y getDoc para la empresa info
+import { collection, onSnapshot } from "firebase/firestore";
 
 import Filtros from "../components/Filtros";
 import ProductList from "../components/ProductList";
@@ -18,19 +18,18 @@ const initialFilters = {
 function Productos() {
   const [allProducts, setAllProducts] = useState([]);
   const [displayedProducts, setDisplayedProducts] = useState([]);
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(12);
 
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
-
   const [filters, setFilters] = useState(initialFilters);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     const productosRef = collection(db, "productos");
-
-    // Listener en tiempo real: carga productos y genera filtros dinámicos (sets)
     const unsubscribe = onSnapshot(productosRef, (snapshot) => {
       const fetchedProducts = [];
       const catSet = new Set();
@@ -48,15 +47,13 @@ function Productos() {
       });
 
       setAllProducts(fetchedProducts);
-      setDisplayedProducts(fetchedProducts); // Inicialmente mostramos todo
+      setDisplayedProducts(fetchedProducts);
       setCategories(Array.from(catSet));
       setBrands(Array.from(brandSet));
     });
-
     return () => unsubscribe();
   }, []);
 
-  // Manejador para cerrar modal con tecla Escape
   useEffect(() => {
     const handleEscapeKey = (e) => {
       if (e.key === "Escape") closeModal();
@@ -65,9 +62,17 @@ function Productos() {
     return () => document.removeEventListener("keydown", handleEscapeKey);
   }, []);
 
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  
+  const currentProducts = displayedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const totalPages = Math.ceil(displayedProducts.length / productsPerPage);
+
   const handleFilterChange = (e) => {
     const { id, value } = e.target;
-    // Extrae la clave del filtro eliminando el prefijo usado en el HTML (ej: 'filtro-nombre')
     const filterKey = id.replace("filtro-", "");
     setFilters((prev) => ({ ...prev, [filterKey]: value }));
   };
@@ -80,21 +85,20 @@ function Productos() {
 
     const filtered = allProducts.filter((product) => {
       const coincideNombre = product.nombre.toLowerCase().includes(nombre);
-      const coincideCategoria =
-        categoria === "" || product.categoria === categoria;
+      const coincideCategoria = categoria === "" || product.categoria === categoria;
       const coincideMarca = marca === "" || product.marca === marca;
       const coincidePrecio = product.precio <= precioMax;
-      return (
-        coincideNombre && coincideCategoria && coincideMarca && coincidePrecio
-      );
+      return coincideNombre && coincideCategoria && coincideMarca && coincidePrecio;
     });
 
     setDisplayedProducts(filtered);
+    setCurrentPage(1);
   };
 
   const handleFilterClear = () => {
     setFilters(initialFilters);
     setDisplayedProducts(allProducts);
+    setCurrentPage(1);
   };
 
   const openModal = (product) => {
@@ -109,7 +113,6 @@ function Productos() {
 
   return (
     <div className="container">
-
       <Filtros
         filters={filters}
         onFilterChange={handleFilterChange}
@@ -121,7 +124,39 @@ function Productos() {
 
       <div className="productos-section-wrapper">
         <h2>Productos</h2>
-        <ProductList products={displayedProducts} onProductClick={openModal} />
+        
+        <ProductList products={currentProducts} onProductClick={openModal} />
+
+        {displayedProducts.length > productsPerPage && (
+          <div className="pagination">
+            <button 
+              onClick={() => paginate(currentPage - 1)} 
+              disabled={currentPage === 1}
+              className="page-btn prev-next"
+            >
+              &laquo; Anterior
+            </button>
+            
+            {/* Generar números de página */}
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => paginate(index + 1)}
+                className={`page-btn ${currentPage === index + 1 ? "active" : ""}`}
+              >
+                {index + 1}
+              </button>
+            ))}
+
+            <button 
+              onClick={() => paginate(currentPage + 1)} 
+              disabled={currentPage === totalPages}
+              className="page-btn prev-next"
+            >
+              Siguiente &raquo;
+            </button>
+          </div>
+        )}
       </div>
 
       <ProductModal

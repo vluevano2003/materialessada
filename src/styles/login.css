@@ -1,146 +1,266 @@
-/* --- Overrides específicos para la página de Login --- */
-/* Necesario para romper el layout flex del archivo global index.css */
 body.page-login {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #f8f9fa;
+  background-color: #f8fafc;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 body.page-login #root {
-  display: block; 
   height: 100vh;
   width: 100vw;
 }
 
-/* --- Layout Principal --- */
 .login-wrapper {
   display: flex;
-  width: 100vw;
   height: 100vh;
-  margin: 0;
-  padding: 0;
+  width: 100vw;
+  overflow: hidden;
 }
 
-/* --- Sección Izquierda (Imagen) --- */
-.login-wrapper .image-section {
-  width: 50%;
-  height: 100%;
+.login-image-section {
+  flex: 1.2;
   position: relative;
-  background-color: #000;
+  background-color: #1e293b;
+  overflow: hidden;
 }
 
-.login-wrapper .image-section img {
+.login-image-section img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  opacity: 0.8;
+  mix-blend-mode: overlay;
 }
 
-/* --- Sección Derecha (Formulario) --- */
-.login-wrapper .form-section {
-  width: 50%;
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(59, 130, 246, 0.4) 100%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.overlay-content {
+  text-align: center;
+  padding: 2rem;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.overlay-content h2 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -1px;
+}
+
+.overlay-content p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  font-weight: 300;
+  margin-top: 10px;
+}
+
+.login-form-section {
+  flex: 1;
+  background: white;
   display: flex;
   flex-direction: column;
+  position: relative;
   justify-content: center;
-  padding: 40px 60px;
-  background-color: #ffffff;
-  box-sizing: border-box;
+  align-items: center;
+  padding: 3rem;
 }
 
-/* --- Estilos de Elementos --- */
-.login-wrapper h2 {
-  margin-bottom: 20px;
-  text-align: center;
-  font-size: 28px;
-  font-weight: bold;
-  color: #333;
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  animation: slideUp 0.5s ease-out;
+  z-index: 10;
+  margin-bottom: 2rem; 
 }
 
-.login-wrapper label {
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #444;
+.login-header {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.login-header h1 {
+  font-size: 2rem;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+  font-weight: 700;
+}
+
+.login-header p {
+  color: #64748b;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.input-group {
+  margin-bottom: 1.2rem;
+}
+
+.input-group label {
   display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 0.5rem;
 }
 
-.login-wrapper input {
+.input-group input {
   width: 100%;
-  padding: 12px 15px;
-  margin-bottom: 20px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  background-color: #f8f9fa;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1.5px solid #e2e8f0;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background-color: #f8fafc;
+  color: #0f172a;
   box-sizing: border-box;
 }
 
-.login-wrapper input:focus {
+.input-group input:focus {
   outline: none;
-  border-color: #005BC2;
-  background-color: #ffffff;
-  box-shadow: 0 0 4px rgba(0, 91, 194, 0.4);
+  border-color: #004494;
+  background-color: white;
+  box-shadow: 0 0 0 4px rgba(0, 68, 148, 0.1);
 }
 
-.login-wrapper button {
-  width: 100%;
-  padding: 12px 15px;
-  background-color: #005BC2;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
+.form-actions-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+  min-height: 24px;
 }
 
-.login-wrapper button:hover {
-  background-color: #004290;
-}
-
-.login-wrapper .forgot-password {
-  text-align: center;
-  margin-top: 10px;
-}
-
-.login-wrapper .forgot-password a {
-  color: #005BC2;
+.forgot-link {
+  color: #004494;
+  font-size: 0.9rem;
   text-decoration: none;
-  font-size: 14px;
+  font-weight: 600;
+  transition: color 0.2s;
 }
 
-/* --- Alertas (Feedback) --- */
-.alert {
-  margin-top: 10px;
-  font-size: 14px;
-  text-align: center;
-  font-weight: bold;
+.forgot-link:hover {
+  color: #003366;
+  text-decoration: underline;
 }
 
-.alert.error {
-  color: #dc3545; /* Rojo */
+.btn-text-cancel {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+  font-weight: 500;
 }
 
-.alert.success {
-  color: #28a745; /* Verde */
+.btn-text-cancel:hover {
+  color: #1e293b;
+  text-decoration: underline;
 }
 
-/* --- Responsive --- */
-@media (max-width: 768px) {
-  .login-wrapper {
-    flex-direction: column;
+.btn-login {
+  width: 100%;
+  padding: 14px;
+  background-color: #004494;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-login:hover {
+  background-color: #003366;
+}
+
+.btn-login:active {
+  transform: scale(0.98);
+}
+
+.btn-login:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.login-alert {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: shake 0.3s ease-in-out;
+}
+
+.login-alert.error { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+.login-alert.success { background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; animation: none; }
+.login-alert.info { background-color: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; animation: none; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+.loader {
+  border: 3px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  border-top: 3px solid white;
+  width: 18px;
+  height: 18px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+@media (max-width: 900px) {
+  body.page-login {
+    overflow-y: auto; 
   }
 
-  .login-wrapper .image-section {
-    width: 100%;
-    height: 250px; 
+  .login-wrapper { 
+    flex-direction: column; 
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  .login-image-section { 
     flex: none;
+    height: 180px;
+    width: 100%; 
   }
-
-  .login-wrapper .form-section {
-    width: 100%;
-    padding: 30px 20px;
-    flex: 1;
+  
+  .overlay-content { padding: 1rem; }
+  .overlay-content h2 { font-size: 2rem; }
+  .overlay-content p { display: none; }
+  
+  .login-form-section { 
+    flex: 1; 
+    padding: 2.5rem 1.5rem; 
+    justify-content: flex-start;
+    min-height: auto;
+  }
+  
+  .login-container { 
+    margin-top: 1rem; 
+    margin-bottom: 4rem;
   }
 }

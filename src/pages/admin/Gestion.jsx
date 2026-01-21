@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import GestionEmpresa from "./GestionEmpresa";
+import GestionDestacados from "../../components/GestionDestacados";
 import "../../styles/gestion.css";
 
 function Gestion() {
@@ -15,12 +16,18 @@ function Gestion() {
       <header className="gestion-header">
         <div className="header-info">
           <h1>Configuración General</h1>
-          <p className="subtitle">Administra la información de contacto y pie de página de la empresa.</p>
+          <p className="subtitle">
+            Administra la información de contacto y productos destacados.
+          </p>
         </div>
       </header>
 
-      <div className="gestion-content">
+      <div
+        className="gestion-content"
+        style={{ flexDirection: "column", gap: "20px" }}
+      >
         <GestionEmpresa />
+        <GestionDestacados />
       </div>
     </div>
   );

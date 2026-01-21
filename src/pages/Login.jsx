@@ -1,5 +1,3 @@
-// src/pages/Login.jsx
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebaseConfig";
@@ -11,18 +9,17 @@ import { doc, getDoc } from "firebase/firestore";
 
 import "../styles/login.css";
 
-// Helper para traducir errores de Firebase a mensajes amigables
 function getErrorMessage(errorCode) {
   const errorMessages = {
-    "auth/invalid-login-credentials": "Correo o contraseña incorrectos.",
-    "auth/too-many-requests":
-      "Demasiados intentos fallidos. Inténtalo más tarde.",
-    "auth/network-request-failed":
-      "Error de red. Revisa tu conexión a Internet.",
+    "auth/invalid-login-credentials": "Las credenciales son incorrectas.",
+    "auth/user-not-found": "No existe una cuenta con este correo.",
+    "auth/wrong-password": "La contraseña es incorrecta.",
+    "auth/too-many-requests": "Demasiados intentos. Espera unos minutos.",
+    "auth/network-request-failed": "Error de conexión. Verifica tu internet.",
+    "auth/missing-email": "Por favor, ingresa un correo electrónico.",
   };
   return (
-    errorMessages[errorCode] ||
-    "Ocurrió un error inesperado. Por favor, intenta de nuevo."
+    errorMessages[errorCode] || "Ocurrió un error inesperado. Intenta de nuevo."
   );
 }
 
@@ -30,10 +27,12 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alertMessage, setAlertMessage] = useState({ type: "", text: "" });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [isResetting, setIsResetting] = useState(false);
 
   const navigate = useNavigate();
 
-  // Manejo de estilos específicos para el body en Login
   useEffect(() => {
     document.body.classList.add("page-login");
     return () => {
@@ -41,119 +40,177 @@ function Login() {
     };
   }, []);
 
-  const handleLogin = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setAlertMessage({ type: "", text: "" });
+    setIsLoading(true);
 
+    if (isResetting) {
+      await handleSendResetEmail();
+    } else {
+      await handleLogin();
+    }
+  };
+
+  const handleLogin = async () => {
     try {
-      // 1. Autenticación básica con Firebase Auth
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
       const user = userCredential.user;
-
-      // 2. Verificación adicional en Firestore (Rol y Estado)
       const userRef = doc(db, "Usuarios", user.uid);
       const userDoc = await getDoc(userRef);
 
       if (userDoc.exists()) {
         const userData = userDoc.data();
-
-        // Bloquear acceso si el admin desactivó la cuenta
         if (!userData.activo) {
           setAlertMessage({
             type: "error",
-            text: "Tu cuenta está desactivada. Contacta con el administrador.",
+            text: "Cuenta desactivada. Contacta al administrador.",
           });
+          setIsLoading(false);
           return;
         }
 
         setAlertMessage({
           type: "success",
-          text: "Inicio de sesión exitoso. Redireccionando...",
+          text: `¡Bienvenido, ${userData.nombre || "Usuario"}!`,
         });
 
-        setTimeout(() => {
-          navigate("/admin");
-        }, 2000);
+        setTimeout(() => navigate("/admin"), 1500);
       } else {
         setAlertMessage({
           type: "error",
-          text: "No se encontró el usuario en la base de datos.",
+          text: "Usuario no registrado en base de datos.",
         });
+        setIsLoading(false);
       }
     } catch (error) {
-      console.log(error.code);
-      const errorMessage = getErrorMessage(error.code);
-      setAlertMessage({ type: "error", text: errorMessage });
+      setAlertMessage({ type: "error", text: getErrorMessage(error.code) });
+      setIsLoading(false);
     }
   };
 
-  const handlePasswordReset = async (event) => {
-    event.preventDefault();
-
-    const resetEmail =
-      email ||
-      prompt("Ingresa tu correo electrónico para recuperar la contraseña:");
-
-    if (!resetEmail) {
-      alert("No ingresaste ningún correo.");
+  const handleSendResetEmail = async () => {
+    if (!email) {
+      setAlertMessage({
+        type: "info",
+        text: "Ingresa tu correo para continuar.",
+      });
+      setIsLoading(false);
       return;
     }
-
     try {
-      await sendPasswordResetEmail(auth, resetEmail);
-      alert("Se ha enviado un correo para restablecer tu contraseña.");
+      await sendPasswordResetEmail(auth, email);
+      setAlertMessage({
+        type: "success",
+        text: "Correo enviado. Revisa tu bandeja (y spam).",
+      });
+      setTimeout(() => {
+        setIsResetting(false);
+        setAlertMessage({ type: "", text: "" });
+      }, 3000);
     } catch (error) {
-      alert(`Error al enviar el correo: ${error.message}`);
+      setAlertMessage({ type: "error", text: getErrorMessage(error.code) });
     }
+    setIsLoading(false);
+  };
+
+  const toggleResetMode = (e) => {
+    e.preventDefault();
+    setIsResetting(!isResetting);
+    setAlertMessage({ type: "", text: "" });
   };
 
   return (
     <div className="login-wrapper">
-      <div className="image-section">
-        <img src="/images/anuncio1.jpg" alt="Imagen de bienvenida" />
+      <div className="login-image-section">
+        <div className="image-overlay">
+          <div className="overlay-content">
+            <h2>Materiales SADA</h2>
+            <p>Sistema de Gestión Empresarial</p>
+          </div>
+        </div>
+        <img src="/images/anuncio1.jpg" alt="Fondo Login" />
       </div>
 
-      <div className="form-section">
-        <h2>Iniciar Sesión</h2>
-
-        <form id="login-form" onSubmit={handleLogin}>
-          <label htmlFor="username">Correo Electrónico:</label>
-          <input
-            type="email"
-            id="username"
-            name="username"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-
-          <label htmlFor="password">Contraseña:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-
-          <button type="submit">Ingresar</button>
-        </form>
-
-        {alertMessage.text && (
-          <div id="alert-message" className={`alert ${alertMessage.type}`}>
-            {alertMessage.text}
+      <div className="login-form-section">
+        <div className="login-container">
+          <div className="login-header">
+            <h1>{isResetting ? "Recuperar Acceso" : "Iniciar Sesión"}</h1>
+            <p>
+              {isResetting
+                ? "Te enviaremos un enlace para restablecer tu contraseña."
+                : "Ingresa tus credenciales para acceder al panel."}
+            </p>
           </div>
-        )}
 
-        <div className="forgot-password">
-          <a href="#" id="forgot-password-link" onClick={handlePasswordReset}>
-            ¿Olvidaste tu contraseña?
-          </a>
+          {alertMessage.text && (
+            <div className={`login-alert ${alertMessage.type}`}>
+              {alertMessage.type === "error" && "⚠️ "}
+              {alertMessage.type === "success" && "✅ "}
+              {alertMessage.type === "info" && "ℹ️ "}
+              {alertMessage.text}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="modern-login-form">
+            <div className="input-group">
+              <label htmlFor="email">Correo Electrónico</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="ejemplo@empresa.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={isLoading}
+              />
+            </div>
+
+            {!isResetting && (
+              <div className="input-group">
+                <label htmlFor="password">Contraseña</label>
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  disabled={isLoading}
+                />
+              </div>
+            )}
+
+            <div className="form-actions-row">
+              {isResetting ? (
+                <button
+                  type="button"
+                  onClick={toggleResetMode}
+                  className="btn-text-cancel"
+                >
+                  ← Volver a Iniciar Sesión
+                </button>
+              ) : (
+                <a href="#" onClick={toggleResetMode} className="forgot-link">
+                  ¿Olvidaste tu contraseña?
+                </a>
+              )}
+            </div>
+
+            <button type="submit" className="btn-login" disabled={isLoading}>
+              {isLoading ? (
+                <span className="loader"></span>
+              ) : isResetting ? (
+                "Enviar Correo de Recuperación"
+              ) : (
+                "Acceder al Sistema"
+              )}
+            </button>
+          </form>
         </div>
       </div>
     </div>

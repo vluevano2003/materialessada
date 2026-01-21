@@ -1,9 +1,15 @@
-/* .inventory-page actúa como namespace para evitar conflictos globales */
 .inventory-page {
   animation: fadeIn 0.4s ease-out;
   max-width: 1400px;
   margin: 0 auto;
   padding: 10px;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.inventory-page,
+.inventory-page * {
+  box-sizing: border-box;
 }
 
 .inventory-header {
@@ -46,25 +52,31 @@
   background-color: #003366;
 }
 
-/* Buscador */
 .list-header-actions {
   margin-bottom: 1.5rem;
 }
-.search-box input {
+
+.search-box {
   width: 100%;
   max-width: 450px;
+  position: relative;
+}
+
+.search-box input {
+  width: 100%;
   padding: 12px 15px;
   border-radius: 10px;
   border: 2px solid #e2e8f0;
   font-size: 1rem;
+  background: white;
 }
+
 .search-box input:focus {
   outline: none;
   border-color: #3b82f6;
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
 }
 
-/* Tabla y Tarjeta Principal */
 .list-card {
   background: white;
   border-radius: 12px;
@@ -95,6 +107,7 @@
   border-bottom: 2px solid #f1f5f9;
   position: sticky;
   top: 0;
+  z-index: 10;
 }
 
 .inventory-page td {
@@ -104,7 +117,6 @@
   text-align: left;
 }
 
-/* Estilos Específicos de Celdas de Usuario */
 .user-cell {
   display: flex;
   align-items: center;
@@ -122,6 +134,7 @@
   justify-content: center;
   font-weight: 700;
   font-size: 1.1rem;
+  flex-shrink: 0;
 }
 
 .user-info {
@@ -145,7 +158,6 @@
   margin-bottom: 2px;
 }
 
-/* Badges */
 .badge {
   padding: 4px 10px;
   border-radius: 6px;
@@ -165,7 +177,6 @@
 .in-stock { background: #dcfce7; color: #166534; }
 .no-stock { background: #f1f5f9; color: #94a3b8; }
 
-/* Botones de Acción en Tabla */
 .action-btn-text {
   padding: 6px 12px;
   border: none;
@@ -185,7 +196,6 @@
   opacity: 0.6;
 }
 
-/* Formulario Overlay */
 .form-container-overlay {
   animation: slideUp 0.3s ease-out;
   background: white;
@@ -250,13 +260,15 @@
   margin-bottom: 8px;
 }
 
-.modern-form input, .modern-form select {
+.modern-form input, 
+.modern-form select {
   width: 100%;
   padding: 12px;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   background: #fcfcfc;
 }
+
 .modern-form input:focus {
   border-color: #3b82f6;
   background: white;
@@ -292,7 +304,6 @@
   cursor: pointer;
 }
 
-/* Mensajes */
 .message-banner {
   padding: 10px;
   border-radius: 6px;
@@ -307,45 +318,86 @@
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Responsive Mobile */
 @media (max-width: 768px) {
-  .form-sections-grid { grid-template-columns: 1fr; gap: 1rem; }
-  .inventory-header { flex-direction: column; text-align: center; gap: 1rem; }
+  
+  .inventory-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    padding: 1rem;
+    align-items: stretch;
+  }
+
   .btn-add-main { width: 100%; }
   
+  .list-header-actions { width: 100%; }
+  .search-box { max-width: 100%; }
+
+  .list-card {
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .table-responsive {
+    border: none;
+    overflow: visible;
+    max-height: none;
+  }
+
   .inventory-page table, 
   .inventory-page thead, 
   .inventory-page tbody, 
   .inventory-page th, 
   .inventory-page td, 
   .inventory-page tr { display: block; }
-  
+
   .inventory-page thead tr { position: absolute; top: -9999px; left: -9999px; }
-  
+
   .inventory-page tr { 
     margin-bottom: 1rem; 
     border: 1px solid #e2e8f0; 
-    border-radius: 8px; 
+    border-radius: 12px;
     background: white; 
     padding: 1rem; 
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
   }
-  
+
   .inventory-page td { 
     border: none; 
     position: relative; 
     padding-left: 0; 
     display: flex; 
     justify-content: space-between; 
-    align-items: center; 
+    align-items: flex-start;
     text-align: right; 
-    padding: 8px 0; 
+    padding: 10px 0; 
     border-bottom: 1px solid #f1f5f9; 
   }
-  
+
   .inventory-page td:last-child { border-bottom: none; justify-content: center; padding-top: 15px; }
-  .inventory-page td::before { content: attr(data-label); font-weight: 700; color: #64748b; font-size: 0.85rem; text-transform: uppercase; margin-right: 15px; }
   
+  .inventory-page td::before { 
+    content: attr(data-label); 
+    font-weight: 700; 
+    color: #64748b; 
+    font-size: 0.85rem; 
+    text-transform: uppercase; 
+    text-align: left; 
+    margin-right: 15px;
+    flex-shrink: 0;
+  }
+
   .inventory-page td[data-label="Usuario"] { flex-direction: column; align-items: flex-start; gap: 10px; }
   .inventory-page td[data-label="Usuario"]::before { display: none; }
+  
+  .contact-info, .user-info {
+    max-width: 60%;
+    text-align: right; 
+    word-break: break-all;
+    line-height: 1.3;
+  }
+
+  .form-sections-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .form-container-overlay { padding: 1.5rem; }
 }
