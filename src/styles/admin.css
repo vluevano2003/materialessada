@@ -11,13 +11,17 @@ body.page-admin {
 
 /* --- SIDEBAR --- */
 .sidebar {
-  width: 260px; /* Reemplazo de --sidebar-width */
-  background-color: #1e293b; /* Reemplazo de --sidebar-bg */
-  color: #f8fafc; /* Reemplazo de --text-main */
+  width: 260px;
+  background-color: #1e293b;
+  color: #f8fafc;
   display: flex;
   flex-direction: column;
   position: fixed;
-  height: 100vh;
+  top: 0;
+  bottom: 0;
+  height: 100dvh;
+  height: 100vh; 
+  height: 100dvh; 
   z-index: 1000;
   transition: all 0.3s ease;
 }
@@ -27,7 +31,7 @@ body.page-admin {
   font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: 1px;
-  color: #005bc3; /* Reemplazo de --accent-color */
+  color: #005bc3;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -45,13 +49,15 @@ body.page-admin {
 .sidebar-nav {
   flex: 1;
   padding: 0 0.75rem;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .nav-link {
   display: flex;
   align-items: center;
   padding: 0.85rem 1rem;
-  color: #94a3b8; /* Reemplazo de --text-muted */
+  color: #94a3b8;
   text-decoration: none;
   border-radius: 8px;
   margin-bottom: 0.5rem;
@@ -65,12 +71,12 @@ body.page-admin {
 }
 
 .nav-link:hover {
-  background-color: #334155; /* Reemplazo de --sidebar-hover */
+  background-color: #334155;
   color: white;
 }
 
 .nav-link.active {
-  background-color: #005bc3; /* Reemplazo de --accent-color */
+  background-color: #005bc3;
   color: white;
 }
 
@@ -104,7 +110,7 @@ body.page-admin {
 /* --- MAIN CONTENT AREA --- */
 .main-content {
   flex: 1;
-  margin-left: 260px; /* Reemplazo de --sidebar-width */
+  margin-left: 260px;
   display: flex;
   flex-direction: column;
   transition: margin 0.3s ease;
@@ -112,7 +118,7 @@ body.page-admin {
 
 .top-bar {
   height: 70px;
-  background-color: #ffffff; /* Reemplazo de --white */
+  background-color: #ffffff;
   border-bottom: 1px solid #e2e8f0;
   display: flex;
   align-items: center;
@@ -129,7 +135,7 @@ body.page-admin {
   background: none;
   border: none;
   cursor: pointer;
-  color: #1e293b; /* Reemplazo de --sidebar-bg */
+  color: #1e293b;
 }
 
 .welcome-msg {
