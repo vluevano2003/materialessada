@@ -6,11 +6,8 @@ const formDefaults = {
   sobreNosotros: "",
   direccion: "",
   telefono: "",
+  whatsappWidget: "",
   email: "",
-  footerDireccion: "",
-  footerTelefono: "",
-  footerEmail: "",
-  footerBottom: "© 2024 Materiales SADA. Todos los derechos reservados.",
 };
 
 function GestionEmpresa() {
@@ -24,8 +21,21 @@ function GestionEmpresa() {
       try {
         const docRef = doc(db, "empresa", "info");
         const docSnap = await getDoc(docRef);
+
         if (docSnap.exists()) {
-          setFormData({ ...formDefaults, ...docSnap.data() });
+          const data = docSnap.data();
+          const {
+            footerDireccion,
+            footerTelefono,
+            footerEmail,
+            footerBottom,
+            ...cleanData
+          } = data;
+
+          setFormData({
+            ...formDefaults,
+            ...cleanData,
+          });
         } else {
           setFormData(formDefaults);
         }
@@ -40,6 +50,11 @@ function GestionEmpresa() {
 
   const handleChange = (e) => {
     const { id, value } = e.target;
+    if (id === "whatsappWidget") {
+      const onlyNums = value.replace(/[^0-9]/g, "");
+      setFormData((prev) => ({ ...prev, [id]: onlyNums }));
+      return;
+    }
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
@@ -74,12 +89,13 @@ function GestionEmpresa() {
       </div>
 
       <form onSubmit={handleSubmit} className="modern-form">
-        {/* DATOS GENERALES */}
-        <div className="form-section-title">Información Pública</div>
+        <div className="form-section-title">Información Pública y Contacto</div>
         <div className="form-sections-grid">
           <div className="form-section">
             <div className="form-group">
-              <label htmlFor="direccion">Dirección Física</label>
+              <label htmlFor="direccion">
+                Dirección Física (Visible en Web y Footer)
+              </label>
               <input
                 type="text"
                 id="direccion"
@@ -91,7 +107,7 @@ function GestionEmpresa() {
 
             <div className="form-row">
               <div className="form-group">
-                <label htmlFor="telefono">Teléfono Principal</label>
+                <label htmlFor="telefono">Teléfono Oficina</label>
                 <input
                   type="tel"
                   id="telefono"
@@ -111,77 +127,45 @@ function GestionEmpresa() {
                 />
               </div>
             </div>
+
+            <div
+              className="form-group"
+              style={{
+                marginTop: "15px",
+                padding: "10px",
+                borderRadius: "8px",
+              }}
+            >
+              <label htmlFor="whatsappWidget">
+                📱 Número WhatsApp (Para el Chat)
+              </label>
+              <input
+                type="text"
+                id="whatsappWidget"
+                value={formData.whatsappWidget}
+                onChange={handleChange}
+                placeholder="Ej: 9211234567"
+                maxLength="10"
+                inputMode="numeric"
+                required
+              />
+              <small style={{ fontSize: "0.8rem", color: "#666" }}>
+                Ingresa solo los 10 dígitos. El sistema agregará el código de
+                México (+52) automáticamente.
+              </small>
+            </div>
           </div>
 
           <div className="form-section">
             <div className="form-group">
-              <label htmlFor="sobreNosotros">
-                Sobre Nosotros (Descripción)
-              </label>
+              <label htmlFor="sobreNosotros">Sobre Nosotros</label>
               <textarea
                 id="sobreNosotros"
                 rows="8"
                 value={formData.sobreNosotros}
                 onChange={handleChange}
                 required
-                placeholder="Describe la historia y misión de la empresa..."
               ></textarea>
-            </div>
-          </div>
-        </div>
-
-        <hr className="divider" />
-
-        {/* FOOTER */}
-        <div className="form-section-title">
-          Configuración del Pie de Página (Footer)
-        </div>
-        <div className="form-sections-grid">
-          <div className="form-section">
-            <div className="form-group">
-              <label htmlFor="footerDireccion">Dirección en Footer</label>
-              <input
-                type="text"
-                id="footerDireccion"
-                value={formData.footerDireccion}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="footerBottom">Texto Copyright</label>
-              <input
-                type="text"
-                id="footerBottom"
-                value={formData.footerBottom}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-
-          <div className="form-section">
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="footerTelefono">Teléfono Footer</label>
-                <input
-                  type="tel"
-                  id="footerTelefono"
-                  value={formData.footerTelefono}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="footerEmail">Email Footer</label>
-                <input
-                  type="email"
-                  id="footerEmail"
-                  value={formData.footerEmail}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
             </div>
           </div>
         </div>

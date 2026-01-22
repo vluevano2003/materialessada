@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebaseConfig';
 import { doc, getDoc } from "firebase/firestore";
+import WhatsAppWidget from "../components/WhatsAppWidget";
 import '../styles/info.css';
 
 const infoDefault = {
@@ -73,6 +74,7 @@ function Informacion() {
             ></iframe>
         </div>
         </div>
+        <WhatsAppWidget />
     </div>
   );
 }

@@ -7,8 +7,7 @@ const footerDefault = {
   direccion: "Lázaro Cárdenas No. 1705 Col. Puerto México Coatzacoalcos, Ver.",
   telefono: "(+52) 9211101741",
   email: "m2gise@hotmail.com",
-  facebook: "https://www.facebook.com/profile.php?id=61578593066586",
-  footerBottom: "© 2024 Materiales SADA. Todos los derechos reservados."
+  facebook: "https://www.facebook.com/profile.php?id=61578593066586"
 };
 
 const FacebookIcon = () => (
@@ -19,7 +18,7 @@ const FacebookIcon = () => (
 
 function Footer() {
   const [info, setInfo] = useState(footerDefault);
-  const [bottomText, setBottomText] = useState(footerDefault.footerBottom);
+  const currentYear = new Date().getFullYear();
 
   useEffect(() => {
     async function cargarFooterData() {
@@ -28,12 +27,11 @@ function Footer() {
         const data = docSnap.exists() ? docSnap.data() : footerDefault;
 
         setInfo({
-          direccion: data.footerDireccion || data.direccion,
-          telefono: data.footerTelefono || data.telefono,
-          email: data.footerEmail || data.email,
-          facebook: data.footerFacebook || footerDefault.facebook
+          direccion: data.direccion || footerDefault.direccion,
+          telefono: data.telefono || footerDefault.telefono,
+          email: data.email || footerDefault.email,
+          facebook: data.facebook || footerDefault.facebook
         });
-        setBottomText(data.footerBottom || footerDefault.footerBottom);
 
       } catch (error) {
         console.error("Error al cargar el footer:", error);
@@ -68,7 +66,7 @@ function Footer() {
       </div>
       
       <div className="footer-bottom" id="footer-bottom-text">
-        {bottomText}
+        © {currentYear} Materiales SADA. Todos los derechos reservados.
       </div>
     </footer>
   );

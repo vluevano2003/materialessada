@@ -1,4 +1,5 @@
 import DestacadosSection from "../components/DestacadosSection";
+import WhatsAppWidget from "../components/WhatsAppWidget";
 
 import "../styles/home.css";
 
@@ -23,6 +24,7 @@ function Home() {
         </div>
       </section>
       <DestacadosSection />
+      <WhatsAppWidget />
     </>
   );
 }

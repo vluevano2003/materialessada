@@ -67,7 +67,7 @@ function GestionDestacados() {
     <div className="form-card full-form" style={{ marginTop: '2rem' }}>
       <div className="form-header-simple">
         <h3>⭐ Productos Destacados (Home)</h3>
-        <p className="subtitle">Selecciona los 3 productos que aparecerán en la portada.</p>
+        <p className="subtitle">Selecciona los 3 productos que aparecerán en el menú principal.</p>
       </div>
 
       <form onSubmit={handleSubmit} className="modern-form">

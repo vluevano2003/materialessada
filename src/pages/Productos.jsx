@@ -5,6 +5,7 @@ import { collection, onSnapshot } from "firebase/firestore";
 import Filtros from "../components/Filtros";
 import ProductList from "../components/ProductList";
 import ProductModal from "../components/ProductModal";
+import WhatsAppWidget from "../components/WhatsAppWidget";
 
 import "../styles/productos.css";
 
@@ -164,6 +165,7 @@ function Productos() {
         isOpen={isModalOpen}
         onClose={closeModal}
       />
+      <WhatsAppWidget />
     </div>
   );
 }
