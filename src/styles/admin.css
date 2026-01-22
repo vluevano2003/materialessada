@@ -1,7 +1,7 @@
 body.page-admin {
   margin: 0;
   font-family: 'Inter', -apple-system, sans-serif;
-  background-color: #f1f5f9; /* Reemplazo de --body-bg */
+  background-color: #f1f5f9;
 }
 
 .admin-container {
@@ -31,7 +31,6 @@ body.page-admin {
   font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: 1px;
-  color: #005bc3;
   display: flex;
   justify-content: space-between;
   align-items: center;

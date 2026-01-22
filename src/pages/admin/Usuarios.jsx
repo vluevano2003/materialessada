@@ -44,7 +44,7 @@ function Usuarios() {
 
   const showMessage = (text, type) => {
     setMessage({ text, type });
-    setTimeout(() => setMessage({ text: "", type: "" }), 3000);
+    setTimeout(() => setMessage({ text: "", type: "" }), 4000);
   };
 
   const handleFormChange = (e) => {
@@ -95,13 +95,17 @@ function Usuarios() {
   const handleToggleState = async (userId, userEmail, currentActiveState) => {
     try {
       if (userEmail === currentUser?.email) {
-        alert("No puedes desactivar tu propia cuenta.");
+        showMessage("⚠️ No puedes desactivar tu propia cuenta de administrador.", "error");
         return;
       }
+      
       const userRef = doc(db, "Usuarios", userId);
       await updateDoc(userRef, { activo: !currentActiveState });
+      showMessage(`Usuario ${!currentActiveState ? 'activado' : 'desactivado'} correctamente.`, "success");
+      
     } catch (error) {
       console.error("Error:", error);
+      showMessage("Hubo un error al cambiar el estado.", "error");
     }
   };
 
@@ -126,7 +130,17 @@ function Usuarios() {
           </button>
         )}
       </header>
+
       <div className="inventory-content">
+        {message.text && (
+          <div 
+            className={`message-banner ${message.type}`} 
+            style={{ marginBottom: '1.5rem', animation: 'fadeIn 0.3s ease' }}
+          >
+            {message.text}
+          </div>
+        )}
+
         {showForm ? (
           <div className="form-container-overlay">
             <div className="form-card full-form">
@@ -138,11 +152,6 @@ function Usuarios() {
               </div>
 
               <form onSubmit={handleCreateUser} className="modern-form">
-                {message.text && (
-                  <div className={`message-banner ${message.type}`}>
-                    {message.text}
-                  </div>
-                )}
 
                 <div className="form-sections-grid">
                   <div className="form-section">
