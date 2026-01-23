@@ -184,8 +184,20 @@ function Inventario() {
                         <label>Precio ($)</label>
                         <input
                           type="number"
+                          min="0"
+                          step="0.01"
                           value={precio}
-                          onChange={(e) => setPrecio(e.target.value)}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            if (val === "" || parseFloat(val) >= 0) {
+                              setPrecio(val);
+                            }
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === "-" || e.key === "e") {
+                              e.preventDefault();
+                            }
+                          }}
                           required
                         />
                       </div>
@@ -193,8 +205,19 @@ function Inventario() {
                         <label>Stock inicial</label>
                         <input
                           type="number"
+                          min="0"
                           value={disponibilidad}
-                          onChange={(e) => setDisponibilidad(e.target.value)}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            if (val === "" || parseFloat(val) >= 0) {
+                              setDisponibilidad(val);
+                            }
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === "-" || e.key === "e") {
+                              e.preventDefault();
+                            }
+                          }}
                           required
                         />
                       </div>

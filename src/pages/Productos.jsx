@@ -29,6 +29,18 @@ function Productos() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
+  const sortProductsByAvailability = (products) => {
+    return [...products].sort((a, b) => {
+      const stockA = Number(a.disponibilidad) || 0;
+      const stockB = Number(b.disponibilidad) || 0;
+      // Si A tiene stock y B no, A va primero (-1)
+      if (stockA > 0 && stockB === 0) return -1;
+      // Si A no tiene stock y B sí, B va primero (1)
+      if (stockA === 0 && stockB > 0) return 1;
+      return 0;
+    });
+  };
+
   useEffect(() => {
     const productosRef = collection(db, "productos");
     const unsubscribe = onSnapshot(productosRef, (snapshot) => {
@@ -42,13 +54,16 @@ function Productos() {
           id: doc.id,
           ...product,
           imagen: product.foto || "/images/default.jpeg",
+          disponibilidad: Number(product.disponibilidad) || 0 
         });
         if (product.categoria) catSet.add(product.categoria);
         if (product.marca) brandSet.add(product.marca);
       });
 
-      setAllProducts(fetchedProducts);
-      setDisplayedProducts(fetchedProducts);
+      const sortedProducts = sortProductsByAvailability(fetchedProducts);
+
+      setAllProducts(sortedProducts);
+      setDisplayedProducts(sortedProducts);
       setCategories(Array.from(catSet));
       setBrands(Array.from(brandSet));
     });
@@ -92,7 +107,9 @@ function Productos() {
       return coincideNombre && coincideCategoria && coincideMarca && coincidePrecio;
     });
 
-    setDisplayedProducts(filtered);
+    const sortedFiltered = sortProductsByAvailability(filtered);
+
+    setDisplayedProducts(sortedFiltered);
     setCurrentPage(1);
   };
 
@@ -138,7 +155,6 @@ function Productos() {
               &laquo; Anterior
             </button>
             
-            {/* Generar números de página */}
             {Array.from({ length: totalPages }, (_, index) => (
               <button
                 key={index + 1}
