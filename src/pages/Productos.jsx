@@ -19,7 +19,7 @@ const initialFilters = {
 function Productos() {
   const [allProducts, setAllProducts] = useState([]);
   const [displayedProducts, setDisplayedProducts] = useState([]);
-  
+
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(12);
 
@@ -31,12 +31,10 @@ function Productos() {
 
   const sortProductsByAvailability = (products) => {
     return [...products].sort((a, b) => {
-      const stockA = Number(a.disponibilidad) || 0;
-      const stockB = Number(b.disponibilidad) || 0;
-      // Si A tiene stock y B no, A va primero (-1)
-      if (stockA > 0 && stockB === 0) return -1;
-      // Si A no tiene stock y B sí, B va primero (1)
-      if (stockA === 0 && stockB > 0) return 1;
+      // Si A está disponible y B no, A va primero (-1)
+      if (a.disponibilidad && !b.disponibilidad) return -1;
+      // Si A no está disponible y B sí, B va primero (1)
+      if (!a.disponibilidad && b.disponibilidad) return 1;
       return 0;
     });
   };
@@ -54,7 +52,9 @@ function Productos() {
           id: doc.id,
           ...product,
           imagen: product.foto || "/images/default.jpeg",
-          disponibilidad: Number(product.disponibilidad) || 0 
+          disponibilidad:
+            product.disponibilidad === true ||
+            Number(product.disponibilidad) > 0,
         });
         if (product.categoria) catSet.add(product.categoria);
         if (product.marca) brandSet.add(product.marca);
@@ -80,8 +80,11 @@ function Productos() {
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  
-  const currentProducts = displayedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  const currentProducts = displayedProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct,
+  );
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -101,10 +104,13 @@ function Productos() {
 
     const filtered = allProducts.filter((product) => {
       const coincideNombre = product.nombre.toLowerCase().includes(nombre);
-      const coincideCategoria = categoria === "" || product.categoria === categoria;
+      const coincideCategoria =
+        categoria === "" || product.categoria === categoria;
       const coincideMarca = marca === "" || product.marca === marca;
       const coincidePrecio = product.precio <= precioMax;
-      return coincideNombre && coincideCategoria && coincideMarca && coincidePrecio;
+      return (
+        coincideNombre && coincideCategoria && coincideMarca && coincidePrecio
+      );
     });
 
     const sortedFiltered = sortProductsByAvailability(filtered);
@@ -142,19 +148,19 @@ function Productos() {
 
       <div className="productos-section-wrapper">
         <h2>Productos</h2>
-        
+
         <ProductList products={currentProducts} onProductClick={openModal} />
 
         {displayedProducts.length > productsPerPage && (
           <div className="pagination">
-            <button 
-              onClick={() => paginate(currentPage - 1)} 
+            <button
+              onClick={() => paginate(currentPage - 1)}
               disabled={currentPage === 1}
               className="page-btn prev-next"
             >
               &laquo; Anterior
             </button>
-            
+
             {Array.from({ length: totalPages }, (_, index) => (
               <button
                 key={index + 1}
@@ -165,8 +171,8 @@ function Productos() {
               </button>
             ))}
 
-            <button 
-              onClick={() => paginate(currentPage + 1)} 
+            <button
+              onClick={() => paginate(currentPage + 1)}
               disabled={currentPage === totalPages}
               className="page-btn prev-next"
             >

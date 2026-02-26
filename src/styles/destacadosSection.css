@@ -40,7 +40,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2.5rem;
-  justify-content: center;
   padding: 10px;
 }
 
@@ -48,12 +47,13 @@
    TARJETA DE PRODUCTO
    ========================================= */
 .product-card {
+  max-width: 320px;
+  width: 100%;
+  margin: 0 auto; 
   background-color: #fff;
   border-radius: 16px;
   overflow: hidden;
-  /* Reemplazo de --card-shadow */
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  /* Reemplazo de --transition */
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   cursor: pointer;
   display: flex;

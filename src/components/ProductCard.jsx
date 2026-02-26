@@ -1,7 +1,7 @@
 import React from 'react';
 
 function ProductCard({ product, onClick }) {
-  const isOutOfStock = !product.disponibilidad || Number(product.disponibilidad) === 0;
+  const isOutOfStock = !product.disponibilidad;
 
   return (
     <div 

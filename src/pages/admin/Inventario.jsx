@@ -20,7 +20,7 @@ function Inventario() {
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [precio, setPrecio] = useState("");
-  const [disponibilidad, setDisponibilidad] = useState("");
+  const [disponibilidad, setDisponibilidad] = useState(true);
   const [marca, setMarca] = useState("");
   const [categoria, setCategoria] = useState("");
   const [nuevaMarca, setNuevaMarca] = useState("");
@@ -68,7 +68,7 @@ function Inventario() {
     setNombre("");
     setDescripcion("");
     setPrecio("");
-    setDisponibilidad("");
+    setDisponibilidad(true);
     setMarca("");
     setCategoria("");
     setNuevaMarca("");
@@ -87,7 +87,7 @@ function Inventario() {
       nombre,
       descripcion,
       precio: parseFloat(precio),
-      disponibilidad: parseInt(disponibilidad),
+      disponibilidad: disponibilidad,
       marca: marcaFinal,
       categoria: categoriaFinal,
       foto: fotoPreview,
@@ -97,15 +97,27 @@ function Inventario() {
       if (foto) {
         const formData = new FormData();
         formData.append("image", foto);
+
         const response = await fetch(
-          "https://api.imgbb.com/1/upload?key=e8b72545a514b6da09673f2dc63502e9",
+          "https://api-imagenes-sada.victorluevmon.workers.dev/",
           {
             method: "POST",
             body: formData,
           },
         );
+
         const data = await response.json();
-        producto.foto = data.data.url;
+
+        if (data.success) {
+          const R2_PUBLIC_URL =
+            "https://pub-f0c92bf3c9424299859075b2e323e1b4.r2.dev/";
+
+          producto.foto = R2_PUBLIC_URL + data.fileName;
+        } else {
+          console.error("Error al subir imagen a R2:", data.error);
+          alert("Hubo un error al subir la imagen");
+          return;
+        }
       }
 
       if (editId) {
@@ -115,7 +127,7 @@ function Inventario() {
       }
       resetForm();
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error completo:", error);
     }
   };
 
@@ -124,7 +136,7 @@ function Inventario() {
     setNombre(prod.nombre);
     setDescripcion(prod.descripcion);
     setPrecio(prod.precio);
-    setDisponibilidad(prod.disponibilidad);
+    setDisponibilidad(prod.disponibilidad === true);
     setMarca(prod.marca);
     setCategoria(prod.categoria);
     setFotoPreview(prod.foto || "");
@@ -202,24 +214,19 @@ function Inventario() {
                         />
                       </div>
                       <div className="form-group">
-                        <label>Stock inicial</label>
-                        <input
-                          type="number"
-                          min="0"
+                        <label>¿Disponible para venta?</label>
+                        <select
                           value={disponibilidad}
-                          onChange={(e) => {
-                            const val = e.target.value;
-                            if (val === "" || parseFloat(val) >= 0) {
-                              setDisponibilidad(val);
-                            }
-                          }}
-                          onKeyDown={(e) => {
-                            if (e.key === "-" || e.key === "e") {
-                              e.preventDefault();
-                            }
-                          }}
+                          onChange={(e) =>
+                            setDisponibilidad(e.target.value === "true")
+                          }
                           required
-                        />
+                        >
+                          <option value="true">Sí, hay existencias</option>
+                          <option value="false">
+                            No, agotado temporalmente
+                          </option>
+                        </select>
                       </div>
                     </div>
                   </div>
@@ -365,16 +372,16 @@ function Inventario() {
                           ${prod.precio?.toLocaleString()}
                         </td>
                         <td className="p-stock" data-label="Stock">
-                          {prod.disponibilidad}
+                          {prod.disponibilidad === true ||
+                          Number(prod.disponibilidad) > 0
+                            ? "Sí"
+                            : "No"}
                         </td>
                         <td data-label="Estado">
-                          {prod.disponibilidad > 5 ? (
+                          {prod.disponibilidad === true ||
+                          Number(prod.disponibilidad) > 0 ? (
                             <span className="status-pill in-stock">
                               En Stock
-                            </span>
-                          ) : prod.disponibilidad > 0 ? (
-                            <span className="status-pill low-stock">
-                              Bajo Stock
                             </span>
                           ) : (
                             <span className="status-pill no-stock">
