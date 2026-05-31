@@ -1,201 +1,171 @@
-/* =========================================
-   SECCIÓN DESTACADOS
-   ========================================= */
 .section-destacados {
-  padding: 4rem 1.5rem;
-  background-color: #f8f9fa; /* Reemplazo de --bg-light */
-  overflow: hidden;
+  padding: 100px 20px;
+  background-color: var(--bg-color);
 }
 
-.container {
-  max-width: 1200px;
+.section-destacados .container {
+  max-width: 1400px;
   margin: 0 auto;
 }
 
 .section-title {
-  font-size: 2.5rem;
-  color: #003366; /* Reemplazo de --primary-color */
-  margin-bottom: 3rem;
-  text-align: center;
+  font-size: 2.8rem;
   font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  position: relative;
+  text-align: center;
+  color: var(--brand-blue);
+  margin-bottom: 60px;
+  letter-spacing: -1px;
 }
 
-.section-title::after {
-  content: '';
-  display: block;
-  width: 60px;
-  height: 4px;
-  background-color: #e30000; /* Reemplazo de --accent-color */
-  margin: 10px auto 0;
-  border-radius: 2px;
-}
-
-/* =========================================
-   GRID DE PRODUCTOS
-   ========================================= */
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2.5rem;
-  padding: 10px;
+  grid-template-columns: repeat(auto-fit, 280px);
+  gap: 30px;
+  justify-content: center;
 }
 
-/* =========================================
-   TARJETA DE PRODUCTO
-   ========================================= */
 .product-card {
-  max-width: 320px;
-  width: 100%;
-  margin: 0 auto; 
-  background-color: #fff;
-  border-radius: 16px;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   position: relative;
-  border: 1px solid transparent;
-  height: 100%;
+}
+
+.product-card::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: var(--brand-red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
 }
 
 .product-card:hover {
   transform: translateY(-8px);
-  /* Reemplazo de --card-hover-shadow */
-  box-shadow: 0 15px 35px rgba(0, 51, 102, 0.15);
-  border-color: rgba(0, 51, 102, 0.1);
+  box-shadow: var(--shadow-xl);
+  border-color: #CBD5E1;
+}
+
+.product-card:hover::after {
+  transform: scaleX(1);
 }
 
 .card-image-wrapper {
   width: 100%;
   height: 220px;
-  background-color: #fff;
+  background-color: var(--surface-color);
+  padding: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .card-image-wrapper img {
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s ease;
+  mix-blend-mode: multiply;
 }
 
 .product-card:hover .card-image-wrapper img {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 .card-content {
-  padding: 1.5rem;
-  text-align: center;
+  padding: 25px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
 .card-content h3 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #333333; /* Reemplazo de --text-dark */
-  margin: 0 0 0.5rem 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 10px;
   line-height: 1.4;
 }
 
 .card-price {
   font-size: 1.5rem;
   font-weight: 800;
-  color: #e30000; /* Reemplazo de --accent-color */
-  margin: 0.5rem 0 1rem 0;
+  color: var(--brand-red);
+  margin-top: auto;
+  margin-bottom: 20px;
 }
 
 .btn-link {
-  margin-top: auto;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #003366; /* Reemplazo de --primary-color */
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  opacity: 0.8;
-  transition: opacity 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px;
+  background-color: var(--bg-color);
+  color: var(--brand-blue);
+  font-weight: 700;
+  border-radius: 6px;
+  transition: all 0.3s ease;
 }
 
 .product-card:hover .btn-link {
-  opacity: 1;
-  text-decoration: underline;
+  background-color: var(--brand-blue);
+  color: var(--brand-white);
 }
 
-/* =========================================
-   LOADING STATE
-   ========================================= */
 .loading-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 200px;
-  color: #666666; /* Reemplazo de --text-light */
+  text-align: center;
+  padding: 60px 0;
+  color: var(--text-muted);
 }
 
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid rgba(0, 51, 102, 0.1);
-  border-left-color: #003366; /* Reemplazo de --primary-color */
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 15px;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* =========================================
-   MÓVILES (CARROUSEL HORIZONTAL)
-   ========================================= */
 @media (max-width: 768px) {
   .section-destacados {
-    padding: 3rem 0 3rem 1rem;
+    padding: 60px 20px;
   }
 
   .section-title {
-    font-size: 2rem;
-    padding-right: 1rem;
-  }
-  
-  /* Transformar Grid a Flex Scrollable */
-  .products-grid {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 1.5rem;
-    padding: 10px 1rem 20px 0;
-    justify-content: flex-start;
-    scrollbar-width: none; 
-    -ms-overflow-style: none;
-    -webkit-overflow-scrolling: touch; 
-  }
-  .products-grid::-webkit-scrollbar {
-    display: none;
+    font-size: 2.2rem;
+    margin-bottom: 40px;
   }
 
-  /* Ajuste de las tarjetas para el carrusel */
-  .product-card {
-    min-width: 280px; 
-    max-width: 280px;
-    scroll-snap-align: center;
-    transform: none !important; 
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
   }
-  
-  /* Asegura que la imagen no rompa el layout */
+
   .card-image-wrapper {
-    height: 180px;
+    height: 150px;
+    padding: 10px;
+  }
+
+  .card-content h3 {
+    font-size: 1rem;
+  }
+
+  .card-price {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
   }
 }

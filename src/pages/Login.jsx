@@ -133,7 +133,6 @@ function Login() {
             <p>Sistema de Gestión Empresarial</p>
           </div>
         </div>
-        <img src="/images/anuncio1.jpg" alt="Fondo Login" />
       </div>
 
       <div className="login-form-section">

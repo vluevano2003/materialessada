@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import ScrollToTop from './components/ScrollToTop';
 
 // Layouts y Páginas Públicas
 import MainLayout from './components/Layout/MainLayout';
@@ -17,8 +18,10 @@ import Cuenta from './pages/admin/Cuenta';
 
 function App() {
   return (
-    <Routes>
-      {/* --- Rutas principales --- */}
+    <>
+      <ScrollToTop />
+      <Routes>
+        {/* --- Rutas principales --- */}
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/productos" element={<Productos />} />
@@ -38,6 +41,7 @@ function App() {
         </Route>
       </Route>
     </Routes>
+    </>
   );
 }
 

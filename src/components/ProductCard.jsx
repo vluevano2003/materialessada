@@ -4,19 +4,25 @@ function ProductCard({ product, onClick }) {
   const isOutOfStock = !product.disponibilidad;
 
   return (
-    <div 
-      className={`producto ${isOutOfStock ? 'sin-stock' : ''}`} 
+    <article 
+      className={`producto-card ${isOutOfStock ? 'agotado' : ''}`} 
       onClick={onClick}
+      role="button"
+      tabIndex={0}
     >
-      <img src={product.imagen} alt={product.nombre} />
-      <h3>{product.nombre}</h3>
+      <div className="producto-img-container">
+        <img src={product.imagen} alt={`Foto de ${product.nombre}`} loading="lazy" />
+      </div>
       
-      <span className="precio">${product.precio}</span>
-      
-      {isOutOfStock && (
-        <span className="etiqueta-agotado">Agotado</span>
-      )}
-    </div>
+      <div className="producto-info">
+        <h3>{product.nombre}</h3>
+        <span className="producto-precio">${product.precio}</span>
+        
+        {isOutOfStock && (
+          <span className="badge-agotado">Agotado</span>
+        )}
+      </div>
+    </article>
   );
 }
 

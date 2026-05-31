@@ -31,9 +31,7 @@ function Productos() {
 
   const sortProductsByAvailability = (products) => {
     return [...products].sort((a, b) => {
-      // Si A está disponible y B no, A va primero (-1)
       if (a.disponibilidad && !b.disponibilidad) return -1;
-      // Si A no está disponible y B sí, B va primero (1)
       if (!a.disponibilidad && b.disponibilidad) return 1;
       return 0;
     });
@@ -136,36 +134,40 @@ function Productos() {
   };
 
   return (
-    <div className="container">
-      <Filtros
-        filters={filters}
-        onFilterChange={handleFilterChange}
-        categories={categories}
-        brands={brands}
-        onFilterSubmit={handleFilterSubmit}
-        onFilterClear={handleFilterClear}
-      />
+    <div className="productos-page-wrapper">
+      <div className="productos-container">
+        
+        <div className="page-header">
+          <h2>Catálogo de Productos</h2>
+          <p>Explora nuestra amplia variedad de materiales de alta calidad.</p>
+        </div>
 
-      <div className="productos-section-wrapper">
-        <h2>Productos</h2>
+        <Filtros
+          filters={filters}
+          onFilterChange={handleFilterChange}
+          categories={categories}
+          brands={brands}
+          onFilterSubmit={handleFilterSubmit}
+          onFilterClear={handleFilterClear}
+        />
 
         <ProductList products={currentProducts} onProductClick={openModal} />
 
         {displayedProducts.length > productsPerPage && (
-          <div className="pagination">
+          <div className="paginacion-moderna">
             <button
               onClick={() => paginate(currentPage - 1)}
               disabled={currentPage === 1}
-              className="page-btn prev-next"
+              className="btn-pagina"
             >
-              &laquo; Anterior
+              &laquo; Ant
             </button>
 
             {Array.from({ length: totalPages }, (_, index) => (
               <button
                 key={index + 1}
                 onClick={() => paginate(index + 1)}
-                className={`page-btn ${currentPage === index + 1 ? "active" : ""}`}
+                className={`btn-pagina ${currentPage === index + 1 ? "activa" : ""}`}
               >
                 {index + 1}
               </button>
@@ -174,9 +176,9 @@ function Productos() {
             <button
               onClick={() => paginate(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="page-btn prev-next"
+              className="btn-pagina"
             >
-              Siguiente &raquo;
+              Sig &raquo;
             </button>
           </div>
         )}

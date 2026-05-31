@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 
 function ProductModal({ product, isOpen, onClose }) {
-  // BLOQUEAR SCROLL
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -17,59 +16,55 @@ function ProductModal({ product, isOpen, onClose }) {
   if (!isOpen || !product) return null;
 
   const handleOverlayClick = (e) => {
-    if (e.target.classList.contains("pop-up-overlay")) {
+    if (e.target.classList.contains("modal-overlay")) {
       onClose();
     }
   };
 
+  const isOutOfStock = !product.disponibilidad;
+
   const modalContent = (
-    <div className="pop-up-overlay" onClick={handleOverlayClick}>
-      <div className="pop-up-content">
-        <button className="cerrar-pop-up" onClick={onClose} aria-label="Cerrar">
+    <div className="modal-overlay" onClick={handleOverlayClick}>
+      <div className="modal-content">
+        <button className="modal-close-btn" onClick={onClose} aria-label="Cerrar">
           &times;
         </button>
 
-        <div className="pop-up-body">
-          {/* Imagen */}
-          <div className="pop-up-image-container">
-            <img
-              src={product.imagen}
-              alt={product.nombre}
-              className="pop-up-image"
-            />
-          </div>
+        {/* Columna Izquierda: Imagen */}
+        <div className="modal-image-col">
+          <img
+            src={product.imagen}
+            alt={product.nombre}
+          />
+        </div>
 
-          {/* Información */}
-          <div className="pop-up-info">
-            <span className="badge-categoria">{product.categoria}</span>
+        {/* Columna Derecha: Información */}
+        <div className="modal-info-col">
+          <span className="modal-badge">{product.categoria}</span>
 
-            <h3 className="pop-up-title">{product.nombre}</h3>
+          <h3 className="modal-title">{product.nombre}</h3>
 
-            <p className="precio-destacado">${product.precio}</p>
+          <p className="modal-price">${product.precio}</p>
 
-            <div className="meta-datos">
-              <p>
-                <strong>Marca:</strong> {product.marca}
-              </p>
-              <p>
-                <strong>Disponibilidad: </strong>
-                <span
-                  className={
-                    !product.disponibilidad ? "text-red" : "text-green"
-                  }
-                >
-                  {product.disponibilidad ? "Disponible" : "Agotado"}
-                </span>
-              </p>
+          <div className="modal-meta">
+            <div className="modal-meta-row">
+              <span>Marca</span>
+              <strong>{product.marca}</strong>
             </div>
-
-            <div className="divider"></div>
-
-            <div className="descripcion-container">
-              <h4>Descripción:</h4>
-              <p className="descripcion-texto">{product.descripcion}</p>
+            <div className="modal-meta-row">
+              <span>Disponibilidad</span>
+              <span className={isOutOfStock ? "status-out" : "status-ok"}>
+                {isOutOfStock ? "Agotado" : "Disponible"}
+              </span>
             </div>
           </div>
+
+          {product.descripcion && (
+            <div className="modal-desc">
+              <h4>Descripción General</h4>
+              <p>{product.descripcion}</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
