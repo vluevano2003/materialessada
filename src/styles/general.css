@@ -52,12 +52,12 @@ main {
   width: 100%;
   z-index: 1000;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  background-color: transparent;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
   padding: 15px 0;
 }
 
 .site-header.scrolled {
-  background-color: var(--glass-bg);
+  background: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   padding: 10px 0;
@@ -104,11 +104,13 @@ main {
   margin-left: 15px;
   letter-spacing: -0.5px;
   text-transform: uppercase;
-  transition: color 0.4s ease;
+  transition: color 0.4s ease, text-shadow 0.4s ease;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.5);
 }
 
 .site-header.scrolled .brand-title {
   color: var(--brand-blue);
+  text-shadow: none;
 }
 
 .nav-item {
@@ -120,11 +122,13 @@ main {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   padding: 5px 0;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.5);
 }
 
 .site-header.scrolled .nav-item {
   color: var(--text-main);
+  text-shadow: none;
 }
 
 .nav-item::after {

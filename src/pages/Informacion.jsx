@@ -1,4 +1,3 @@
-// src/pages/Informacion.jsx
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebaseConfig';
 import { doc, getDoc } from "firebase/firestore";
