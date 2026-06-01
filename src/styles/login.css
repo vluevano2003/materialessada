@@ -22,6 +22,9 @@ body.page-login #root {
   flex: 1.2;
   position: relative;
   background-color: #1e293b;
+  background-image: url('/materiales-sada-bg.png');
+  background-size: cover;
+  background-position: center;
   overflow: hidden;
 }
 

@@ -10,7 +10,7 @@ const infoDefault = {
   direccion: "Cargando...",
   telefono: "Cargando...",
   email: "Cargando...",
-  mapaUrl: "https://www.google.com/maps/embed?pb=!4v1731131892797!6m8!1m7!1sfwuwLXagDnJ6r_cinxHV7w!2m2!1d18.15076709905163!2d-94.4428635153618!3f177.3487840321954!4f-0.29297102906518546!5f0.7820865974627469"
+  mapaUrl: "https://www.google.com/maps/embed?pb=!4v1780343494704!6m8!1m7!1sojtouYtgKmhOv_OSZOoTSA!2m2!1d18.1507948654019!2d-94.44286516453064!3f172.42894994634858!4f0.34324216666813356!5f0.7820865974627469"
 };
 
 function Informacion() {
@@ -42,27 +42,27 @@ function Informacion() {
 
   return (
     <div className="info-page-wrapper">
-        <div className="info-container">
+      <div className="info-container">
         {/* Sección de Texto (Izquierda) */}
         <section className="info-content">
-            <h2>Sobre Nosotros</h2>
-            <p className="description">{info.sobreNosotros}</p>
+          <h2>Sobre Nosotros</h2>
+          <p className="description">{info.sobreNosotros}</p>
 
-            <div className="contact-details">
-                <h3>Dirección:</h3>
-                <p>{info.direccion}</p>
+          <div className="contact-details">
+            <h3>Dirección:</h3>
+            <p>{info.direccion}</p>
 
-                <h3>Teléfono:</h3>
-                <p>{info.telefono}</p>
+            <h3>Teléfono:</h3>
+            <p>{info.telefono}</p>
 
-                <h3>Email:</h3>
-                <p>{info.email}</p>
-            </div>
+            <h3>Email:</h3>
+            <p>{info.email}</p>
+          </div>
         </section>
 
         {/* Sección de Mapa (Derecha) */}
         <div className="map-container">
-            <iframe
+          <iframe
             src={info.mapaUrl}
             title="Ubicación Materiales SADA"
             width="100%"
@@ -71,10 +71,10 @@ function Informacion() {
             allowFullScreen=""
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
+          ></iframe>
         </div>
-        </div>
-        <WhatsAppWidget />
+      </div>
+      <WhatsAppWidget />
     </div>
   );
 }

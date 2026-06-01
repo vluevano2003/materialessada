@@ -6,6 +6,9 @@
   display: flex;
   align-items: center;
   background-color: var(--brand-blue);
+  background-image: url('/materiales-sada-bg.png');
+  background-size: cover;
+  background-position: center;
   overflow: hidden;
 }
 
